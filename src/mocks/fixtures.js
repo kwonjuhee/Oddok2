@@ -15,3 +15,5 @@ export const studyroomList = Array.from(new Array(100), (_, i) => ({
   currentUsers: getRandomInt(0, 7),
   limitUsers: 6,
 }));
+
+export const hashtags = new Array(15).fill(0).map((_, i) => `태그${i + 1}`);

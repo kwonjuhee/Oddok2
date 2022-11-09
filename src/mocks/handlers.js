@@ -1,10 +1,11 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { rest } from "msw";
-import { studyroomList } from "./fixtures";
+import { studyroomList, hashtags } from "./fixtures";
 
 export const handlers = [
   rest.get("/bookmark", (_, res, ctx) =>
     res(
+      ctx.delay(),
       ctx.status(200),
       ctx.json({
         name: "도비들의 공부방",
@@ -49,10 +50,15 @@ export const handlers = [
 
     if (req.url.searchParams.get("sort")) result = result.sort((a, b) => b.currentUsers - a.currentUsers);
 
-    return res(ctx.status(200), ctx.json(result.slice(query.page * SIZE_PER_PAGE, (query.page + 1) * SIZE_PER_PAGE)));
+    return res(
+      ctx.delay(),
+      ctx.status(200),
+      ctx.json(result.slice(query.page * SIZE_PER_PAGE, (query.page + 1) * SIZE_PER_PAGE)),
+    );
   }),
   rest.get("/user/info", (_, res, ctx) =>
     res(
+      ctx.delay(),
       ctx.status(200),
       ctx.json({
         nickname: "쥐쥐",
@@ -60,6 +66,7 @@ export const handlers = [
     ),
   ),
   rest.get("/participant/count", (_, res, ctx) =>
-    res(ctx.status(200), ctx.json(studyroomList.reduce((acc, cur) => acc + cur.currentUsers, 0))),
+    res(ctx.delay(), ctx.status(200), ctx.json(studyroomList.reduce((acc, cur) => acc + cur.currentUsers, 0))),
   ),
+  rest.get("/hashtag/popular", (req, res, ctx) => res(ctx.delay(), ctx.json({ hashtags }))),
 ];
