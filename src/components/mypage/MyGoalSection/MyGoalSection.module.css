@@ -42,3 +42,10 @@
 .text_field {
   height: 90px;
 }
+
+@media screen and (max-width: 768px) {
+  .box {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

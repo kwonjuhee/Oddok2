@@ -10,7 +10,7 @@ function MyRoom({ roomData }) {
       </div>
       <div className={styles.info_box}>
         <div className={styles.title}>{roomData.name}</div>
-        <div>
+        <div className={styles.hashtags}>
           {roomData.hashtags.map((hashtag) => (
             <span key={hashtag}>#{hashtag} </span>
           ))}

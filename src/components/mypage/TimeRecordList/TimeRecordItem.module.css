@@ -2,7 +2,7 @@
   display: flex;
   margin: 12px;
   color: var(--gray500);
-  font-size: var(--text-sm);
+  font-size: 0.875rem;
 }
 
 .color {

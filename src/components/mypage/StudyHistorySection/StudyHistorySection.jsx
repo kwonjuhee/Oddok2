@@ -43,7 +43,7 @@ function StudyHistorySection() {
     <section>
       <h2 className={styles.heading}>공부 기록</h2>
       <div className={styles.container}>
-        <div className={`${styles.box} ${isSharePage ? styles.share : ""}`}>
+        <div className={`${styles.left_box} ${isSharePage ? styles.share : ""}`}>
           {!isSharePage && (
             <div>
               <div className={styles.sub_heading}>날짜</div>
@@ -52,17 +52,17 @@ function StudyHistorySection() {
           )}
           <div>
             <div className={styles.sub_heading}>과목</div>
-            <div className={styles.study_time_box}>
-              <div className={styles.total_time}>
+            <div className={styles.subject_box}>
+              <span>
                 {`${Math.floor(totalStudyTime / 1000 / 60 / 60)}시간 
                   ${Math.floor((totalStudyTime / 1000 / 60) % 60)}분 
                   ${Math.floor(totalStudyTime / 1000) % 60}초`}
-              </div>
+              </span>
               <TimeRecordList list={timeRecordData} />
             </div>
           </div>
         </div>
-        <div className={`${styles.time_table} ${isSharePage ? styles.share : ""}`}>
+        <div className={`${styles.right_box} ${isSharePage ? styles.share : ""}`}>
           <div className={styles.sub_heading}>시간표</div>
           <TimeTable timeRecordList={timeRecordData} />
         </div>

@@ -16,33 +16,40 @@
   font-size: 0.875rem;
 }
 
-.box {
+.left_box {
+  flex: 2 1 350px;
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
-.box.share {
+.left_box.share {
   flex: 1;
 }
 
-.study_time_box {
+.subject_box {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
 }
 
-.total_time {
+.subject_box > span {
   font-weight: 600;
   font-size: 1.5rem;
   line-height: 48px;
 }
 
-.time_table {
-  width: 100%;
+.right_box {
+  flex: 3 1 470px;
 }
 
-.time_table.share {
+.right_box.share {
   flex: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    gap: 4px;
+  }
 }

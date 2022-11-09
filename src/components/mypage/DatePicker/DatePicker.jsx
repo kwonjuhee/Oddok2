@@ -24,7 +24,7 @@ function DatePicker({ onChange }) {
       <button type="button" className={styles.button} onClick={() => changeDate(subDays(currentDate, 1))}>
         <ArrowLeft />
       </button>
-      <div>
+      <div className={styles.picker}>
         <Picker
           locale={ko}
           dateFormat="yyyy.MM.dd (E)"

@@ -5,9 +5,7 @@
 }
 
 .thumbnail_box {
-  background-color: #212529;
-  width: 140px;
-  padding: 3px 12px;
+  width: 180px;
   flex-shrink: 0;
 }
 
@@ -19,17 +17,20 @@
 }
 
 .info_box > div {
-  margin: 0;
-  color: var(--gray300);
-  min-width: 240px;
-  max-width: 320px;
+  display: -webkit-box;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  white-space: pre-wrap;
 }
 
 .title {
   color: var(--gray100);
   font-weight: 500;
   font-size: 1.25rem;
+}
+
+.hashtags {
+  margin: 0;
+  color: var(--gray300);
 }
