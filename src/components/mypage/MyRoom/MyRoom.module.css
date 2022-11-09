@@ -15,7 +15,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  font-size: var(--text-sm);
+  font-size: 0.875rem;
 }
 
 .info_box > div {
@@ -30,6 +30,6 @@
 
 .title {
   color: var(--gray100);
-  font-weight: var(--font-medium);
-  font-size: var(--text-xl);
+  font-weight: 500;
+  font-size: 1.25rem;
 }

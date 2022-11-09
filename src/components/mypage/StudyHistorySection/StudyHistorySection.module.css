@@ -6,14 +6,14 @@
 .heading {
   margin: 0;
   margin-bottom: 24px;
-  font-weight: var(--font-semibold);
-  font-size: var(--text-2xl);
+  font-weight: 600;
+  font-size: 1.5rem;
 }
 
 .sub_heading {
   margin-bottom: 8px;
   color: var(--gray600);
-  font-size: var(--text-sm);
+  font-size: 0.875rem;
 }
 
 .box {
@@ -34,8 +34,8 @@
 }
 
 .total_time {
-  font-weight: var(--font-semibold);
-  font-size: var(--text-2xl);
+  font-weight: 600;
+  font-size: 1.5rem;
   line-height: 48px;
 }
 
