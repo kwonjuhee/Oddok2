@@ -25,9 +25,9 @@ function Router() {
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/login/oauth2/code/kakao" element={<RedirectPage />} />
-          <Route path="/logout/oauth2/code/kakao" element={<LogoutRedirectPage />} />
         </Route>
         <Route element={<PrivateRoute />}>
+          <Route path="/logout/oauth2/code/kakao" element={<LogoutRedirectPage />} />
           <Route path="/studyroom/create" element={<CreateRoom />} />
           <Route path="/studyroom/:roomId/setting" element={<JoinRoom />} />
           <Route path="/studyroom/:roomId" element={<StudyRoom />} />
