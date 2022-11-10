@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useRecoilState, useSetRecoilState, useResetRecoilState } from "recoil";
 import { roomInfoState, deviceState } from "@recoil/studyroom-state";
 import { errorState } from "@recoil/error-state";
@@ -13,7 +13,6 @@ import {
   totalSecondState,
   studyTimeState,
 } from "@recoil/timer-state";
-import { leaveStudyRoom } from "@api/study-room-api";
 import { initSession, connectToSession, connectDevice, initPublisher } from "@api/openvidu-api";
 import {
   StudyBar,
@@ -26,11 +25,13 @@ import {
 import { Modal } from "@components/@commons";
 import { useToggleSideBar, useManageLocalUser, useManageRemoteUsers } from "@hooks";
 import useModal from "@hooks/useModal";
+import { useLeaveStudyRoom } from "@hooks/@queries/studyroom-queries";
 import styles from "./StudyRoom.module.css";
 
 function StudyRoom() {
   const navigate = useNavigate();
   const { roomId } = useParams();
+  const location = useLocation();
   const [session, setSession] = useState(initSession());
   const { localUser, setLocalUser, videoActive, audioActive, toggleVideo, toggleAudio } = useManageLocalUser();
   const { remoteUsers, onRemoteStreamCreated, onRemoteStreamDestroyed, onRemoteMicStatusChanged } =
@@ -49,6 +50,7 @@ function StudyRoom() {
   const resetSelectedPlan = useResetRecoilState(selectedPlanState);
   const { sideBarType, toggleSideBar } = useToggleSideBar();
   const { isModal: isLeaveModal, openModal: openLeaveModal, closeModal } = useModal();
+  const { mutate } = useLeaveStudyRoom();
   const setError = useSetRecoilState(errorState);
 
   const resetState = () => {
@@ -63,23 +65,29 @@ function StudyRoom() {
     resetSelectedPlan();
   };
 
-  const leaveRoom = async () => {
-    await leaveStudyRoom(roomId);
-    session.disconnect();
-    resetState();
-    navigate("/", { replace: true });
+  const leaveRoom = () => {
+    mutate(roomId, {
+      onSuccess: () => {
+        session.disconnect();
+        resetState();
+        navigate("/", { replace: true });
+      },
+    });
   };
 
-  const goToSharePage = async () => {
-    await leaveStudyRoom(roomId);
-    session.disconnect();
-    resetState();
-    navigate("/share/study-time", { replace: true });
+  const goToSharePage = () => {
+    mutate(roomId, {
+      onSuccess: () => {
+        session.disconnect();
+        resetState();
+        navigate("/share/study-time", { replace: true });
+      },
+    });
   };
 
   const startOpenvidu = async () => {
     const [_, deviceId] = await Promise.all([
-      connectToSession(session, history.location.state.token, localUser, roomId),
+      connectToSession(session, location.state.token, localUser, roomId),
       connectDevice(deviceStatus),
     ]);
     const stream = await initPublisher(deviceId, deviceStatus);
@@ -88,8 +96,8 @@ function StudyRoom() {
   };
 
   useEffect(() => {
-    if (!history.location.state) {
-      history.push(`/studyroom/${roomId}/setting`);
+    if (!location.state.token) {
+      navigate(-1);
     }
     startOpenvidu().catch((error) => setError(error));
   }, []);

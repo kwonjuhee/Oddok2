@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { deviceState } from "@recoil/studyroom-state";
 
 const useMyStream = () => {
   const videoRef = useRef();
-  const [videoActive, setVideoActive] = useState(true);
-  const [audioActive, setAudioActive] = useState(false);
+  const setDeviceStatus = useSetRecoilState(deviceState);
 
   useEffect(() => {
     const getVideoandAudio = async () => {
@@ -17,11 +18,6 @@ const useMyStream = () => {
       window.localStream = stream;
     };
     getVideoandAudio();
-    return () => {
-      window.localStream.getTracks().forEach((track) => {
-        track.stop();
-      });
-    };
   }, []);
 
   const toggleVideo = () => {
@@ -29,7 +25,7 @@ const useMyStream = () => {
     if (!myStream) return;
     const videoTrack = myStream.getVideoTracks()[0];
     videoTrack.enabled = !videoTrack.enabled;
-    setVideoActive((prev) => !prev);
+    setDeviceStatus((prev) => ({ ...prev, video: videoTrack.enabled }));
   };
 
   const toggleAudio = () => {
@@ -37,8 +33,11 @@ const useMyStream = () => {
     if (!myStream) return;
     const audioTrack = myStream.getAudioTracks()[0];
     audioTrack.enabled = !audioTrack.enabled;
-    setAudioActive((prev) => !prev);
+    setDeviceStatus((prev) => ({ ...prev, audio: audioTrack.enabled }));
   };
+
+  const videoActive = videoRef.current?.srcObject?.getVideoTracks()[0].enabled ?? true;
+  const audioActive = videoRef.current?.srcObject?.getAudioTracks()[0].enabled ?? false;
 
   return { videoRef, videoActive, audioActive, toggleVideo, toggleAudio };
 };

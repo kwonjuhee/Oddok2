@@ -1,26 +1,52 @@
-import React from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import { roomInfoState } from "@recoil/studyroom-state";
-import { errorState } from "@recoil/error-state";
-import { startStudyRoom } from "@api/study-room-api";
-import { Loading } from "@components/@commons";
-import { SettingRoom } from "@components/studyroom";
-import { useGoToPage, useAsync } from "@hooks";
+import { SettingBar, UserVideo, SettingForm, PlanSidebar } from "@components/studyroom";
+import { useToggleSideBar, useMyStream } from "@hooks";
+import { useCreateStudyRoom } from "@hooks/@queries/studyroom-queries";
+import { useFetchUserInfo } from "@hooks/@queries/user-queries";
+import styles from "./styles.module.css";
 
 function CreateRoom() {
+  const navigate = useNavigate();
   const roomInfo = useRecoilValue(roomInfoState);
-  const setError = useSetRecoilState(errorState);
-  const { goToStudy } = useGoToPage();
-  const { loading, request: startStudy } = useAsync({
-    requestFn: () => startStudyRoom(roomInfo),
-    onSuccess: ({ id, token }) => goToStudy(id, token),
-    onError: (error) => setError(error),
-  });
+  const { sideBarType, toggleSideBar } = useToggleSideBar();
+  const { videoRef, videoActive, audioActive, toggleVideo, toggleAudio } = useMyStream();
+  const { nickname } = useFetchUserInfo();
+  const { mutate } = useCreateStudyRoom();
+
+  const clickStartStudy = () => {
+    mutate(roomInfo, {
+      onSuccess: ({ id, token }) => {
+        navigate(`/studyroom/${id}`, { state: { token } });
+      },
+    });
+  };
 
   return (
     <>
-      {loading && <Loading />}
-      <SettingRoom goToStudyRoom={startStudy} />
+      <div className={styles.container}>
+        {sideBarType === "SETTING" && <SettingForm onClose={toggleSideBar} />}
+        <UserVideo
+          count={1}
+          user={{
+            streamRef: videoRef,
+            isHost: true,
+            audioActive,
+            nickname,
+          }}
+        />
+        {sideBarType === "PLAN" && <PlanSidebar />}
+      </div>
+      <SettingBar
+        studyroomName={roomInfo.name || "방정보를 입력해주세요"}
+        clickStartStudy={clickStartStudy}
+        toggleVideo={toggleVideo}
+        toggleAudio={toggleAudio}
+        clickSideBarBtn={toggleSideBar}
+        videoActive={videoActive}
+        audioActive={audioActive}
+      />
     </>
   );
 }

@@ -1,43 +1,41 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { roomInfoState } from "@recoil/studyroom-state";
-import { userState } from "@recoil/user-state";
 import { Hashtag, Play, Pause } from "@icons";
-import { updateStudyRoom } from "@api/study-room-api";
+import { useStudyRoomQuery, useUpdateStudyRoom } from "@hooks/@queries/studyroom-queries";
 import { SettingForm } from "..";
 import styles from "./SettingSideBar.module.css";
 
-function SettingSideBar({ session }) {
+function SettingSideBar({ session, showEditBtn }) {
   const { roomId } = useParams();
+  const { studyroomData } = useStudyRoomQuery(roomId);
+  const { mutate } = useUpdateStudyRoom(roomId);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [roomInfo, setRoomInfo] = useRecoilState(roomInfoState);
-  const { updateAllowed } = useRecoilValue(userState);
 
   const toggleSettingForm = () => setIsFormOpen((prev) => !prev);
 
-  const updateRoomInfo = async (data) => {
-    try {
-      const res = await updateStudyRoom(roomId, data);
-      session?.signal({
-        data: JSON.stringify(res),
-        to: [],
-        type: "roomDataUpdated",
-      });
-      setRoomInfo(res);
-    } catch (e) {
-      console.error(e);
-    }
+  const updateRoomInfo = (newRoomInfo) => {
+    mutate(
+      { roomId, newRoomInfo },
+      {
+        onSuccess: () => {
+          session?.signal({
+            data: JSON.stringify(newRoomInfo),
+            to: [],
+            type: "roomDataUpdated",
+          });
+        },
+      },
+    );
   };
 
   return (
     <>
       {isFormOpen && <SettingForm onClose={toggleSettingForm} onUpdate={updateRoomInfo} />}
       <aside className={styles.side_box}>
-        <h1>{roomInfo.name}</h1>
+        <h1>{studyroomData.name}</h1>
         <div>
           <ul className={styles.hashtags}>
-            {roomInfo.hashtags.map((hashtag) => (
+            {studyroomData.hashtags?.map((hashtag) => (
               <li key={hashtag}>
                 <Hashtag />
                 <span>{hashtag}</span>
@@ -47,13 +45,13 @@ function SettingSideBar({ session }) {
         </div>
         <div>
           <span className={styles.label}>스터디 기간</span>
-          <div className={styles.text_field}>{roomInfo.endAt}</div>
+          <div className={styles.text_field}>{studyroomData.endAt}</div>
         </div>
         <div className={styles.rule}>
           <span className={styles.label}>스터디 규칙</span>
-          <div className={styles.text_field}>{roomInfo.rule ? roomInfo.rule : "없음"}</div>
+          <div className={styles.text_field}>{studyroomData.rule ? studyroomData.rule : "없음"}</div>
         </div>
-        {updateAllowed && (
+        {showEditBtn && (
           <button className={styles.button} type="submit" onClick={toggleSettingForm}>
             방 정보 수정
           </button>
