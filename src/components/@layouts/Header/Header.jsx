@@ -1,31 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { userState } from "@recoil/user-state";
-import { getUserInfo } from "@api/user-api";
 import { Search, Profile } from "@icons";
 import { NicknameEditModal } from "@components/@commons";
 import { useModal, useGoToPage, useOutSideClick } from "@hooks";
+import { useFetchUserInfo } from "@hooks/@queries/user-queries";
 import ProfileMenu from "./ProfileMenu";
 import styles from "./Header.module.css";
 
 function Header() {
-  const [user, setUserState] = useRecoilState(userState);
+  const { isLogin, nickname } = useFetchUserInfo();
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
   const { isModal, openModal, closeModal } = useModal();
   const { goToSearch, goToCreate } = useGoToPage();
 
   const dropdownRef = useRef();
   useOutSideClick(dropdownRef, () => setIsOpenProfileMenu(false));
-
-  useEffect(() => {
-    if (!user.isLogin || user.nickname !== null) {
-      return;
-    }
-    getUserInfo()
-      .then((response) => setUserState((prev) => ({ ...prev, id: response.id, nickname: response.nickname })))
-      .catch((error) => console.error(error));
-  }, [user.isLogin, user.nickname]);
 
   const clickProfileBtn = () => setIsOpenProfileMenu((prev) => !prev);
 
@@ -56,9 +45,9 @@ function Header() {
           <div ref={dropdownRef}>
             <button type="button" onClick={clickProfileBtn}>
               <Profile />
-              <span className={styles.nickname}>{user.nickname}</span>
+              <span className={styles.nickname}>{nickname}</span>
             </button>
-            {user.isLogin && isOpenProfileMenu && <ProfileMenu clickNicknameEditBtn={clickNicknameEditBtn} />}
+            {isLogin && isOpenProfileMenu && <ProfileMenu clickNicknameEditBtn={clickNicknameEditBtn} />}
           </div>
           <button type="button" className={styles.study_btn} onClick={goToCreate}>
             + 새 스터디 만들기
