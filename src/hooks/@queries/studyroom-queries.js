@@ -1,5 +1,12 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getStudyRoom, createStudyRoom, joinStudyRoom, updateStudyRoom, leaveStudyRoom } from "@api/study-room-api";
+import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  getStudyRoom,
+  getStudyRoomList,
+  createStudyRoom,
+  joinStudyRoom,
+  updateStudyRoom,
+  leaveStudyRoom,
+} from "@api/study-room-api";
 import { useSetRecoilState } from "recoil";
 import { errorState } from "@recoil/error-state";
 import { loadingState } from "@recoil/loading-state";
@@ -14,6 +21,38 @@ export const useStudyRoomQuery = (studyroomId) => {
   return {
     isLoading,
     studyroomData: data ?? {},
+  };
+};
+
+export const useStudyRoomList = (searchParams) => {
+  const {
+    isLoading,
+    data: studyroomData,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
+    queryKey: [
+      "studyroomList",
+      {
+        sort: searchParams.get("sort"),
+        isPublic: searchParams.get("isPublic"),
+        category: searchParams.get("category"),
+        name: searchParams.get("name"),
+        hashtag: searchParams.get("hashtag"),
+      },
+    ],
+    queryFn: ({ pageParam = 0 }) => getStudyRoomList(searchParams, pageParam),
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.flatMap((e) => e).length < 16 ? undefined : Math.ceil(allPages.flatMap((e) => e).length / 16),
+    select: (data) => data.pages.flatMap((e) => e),
+  });
+
+  return {
+    isLoading: isLoading || isFetchingNextPage,
+    studyroomData: studyroomData ?? [],
+    fetchNextPage,
+    hasNextPage,
   };
 };
 

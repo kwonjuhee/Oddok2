@@ -1,44 +1,17 @@
-import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getStudyRoomList } from "@api/study-room-api";
 import { Dropdown } from "@components/@commons";
 import { TabMenu, StudyRoomCardGrid } from "@components/main";
 import { ArrowDown } from "@icons";
 import { STUDY_FILTER_OPTIONS, STUDY_SORT_OPTIONS } from "@utils/constants/options";
+import { useStudyRoomList } from "@hooks/@queries/studyroom-queries";
 import styles from "./StudyRoomCardList.module.css";
 
 function StudyRoomCardList({ tagFilter }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [loadedStudyRooms, setLoadedStudyRooms] = useState([]);
-  const [nextPage, setNextPage] = useState(1);
-  const [isLastPage, setIsLastPage] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const fetchStudyRoomlist = async (params, page, onSuccess) => {
-    try {
-      setLoading(true);
-      const rooms = await getStudyRoomList(params, page);
-      if (rooms.length < 16) setIsLastPage(true);
-      onSuccess(rooms);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchStudyRoomlist(searchParams, null, (rooms) => {
-      setLoadedStudyRooms(rooms);
-      setNextPage(1);
-    });
-  }, [searchParams]);
+  const { isLoading, studyroomData, fetchNextPage, hasNextPage } = useStudyRoomList(searchParams);
 
   const clickMoreBtn = () => {
-    fetchStudyRoomlist(searchParams, nextPage, (rooms) => {
-      setLoadedStudyRooms((prev) => [...prev, ...rooms]);
-      setNextPage((prev) => prev + 1);
-    });
+    fetchNextPage();
   };
 
   return (
@@ -74,14 +47,14 @@ function StudyRoomCardList({ tagFilter }) {
         </div>
       </div>
       <StudyRoomCardGrid
-        isLoading={loading}
+        isLoading={isLoading}
         rooms={
           tagFilter?.size > 0
-            ? loadedStudyRooms.filter(({ hashtags }) => hashtags.some((e) => [...tagFilter].includes(e)))
-            : loadedStudyRooms
+            ? studyroomData.filter(({ hashtags }) => hashtags.some((e) => [...tagFilter].includes(e)))
+            : studyroomData
         }
       />
-      {loadedStudyRooms.length > 0 && !isLastPage && (
+      {hasNextPage && (
         <div className={styles.footer}>
           <button type="button" onClick={clickMoreBtn}>
             <span>더보기</span>
