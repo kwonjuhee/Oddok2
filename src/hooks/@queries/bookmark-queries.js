@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";
 import { userState } from "@recoil/user-state";
-import { getBookmark } from "@api/bookmark-api";
+import { getBookmark, saveBookmark, removeBookmark } from "@api/bookmark-api";
 
 export const useBookmarkQuery = () => {
   const { isLogin } = useRecoilValue(userState);
@@ -24,4 +24,26 @@ export const useBookmarkQuery = () => {
   });
 
   return { isLoading, bookmarkData };
+};
+
+export const useAddBookmark = () => {
+  const queryclient = useQueryClient();
+
+  return useMutation({
+    mutationFn: saveBookmark,
+    onSuccess: () => {
+      queryclient.invalidateQueries(["bookmark"]);
+    },
+  });
+};
+
+export const useDeleteBookmark = () => {
+  const queryclient = useQueryClient();
+
+  return useMutation({
+    mutationFn: removeBookmark,
+    onSuccess: () => {
+      queryclient.setQueryData(["bookmark"], null);
+    },
+  });
 };

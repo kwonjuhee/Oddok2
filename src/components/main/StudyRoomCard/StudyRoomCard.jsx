@@ -1,19 +1,21 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { bookmarkState } from "@recoil/bookmark-state";
+import { useRecoilValue } from "recoil";
 import { userState } from "@recoil/user-state";
-import { saveBookmark, removeBookmark } from "@api/bookmark-api";
 import { PasswordModal, Thumbnail, UserCount } from "@components/@commons";
 import { Lock, Unlock, BookMark, BookMarkHeart } from "@icons";
 import { useModal, useGoToPage } from "@hooks";
+import { useBookmarkQuery, useAddBookmark, useDeleteBookmark } from "@hooks/@queries/bookmark-queries";
 import styles from "./StudyRoomCard.module.css";
 
 function StudyRoomCard({ roomData }) {
   const user = useRecoilValue(userState);
-  const [bookmark, setBookmark] = useRecoilState(bookmarkState);
   const { isModal, openModal, closeModal } = useModal();
   const { goToLogin, goToSetting } = useGoToPage();
+
+  const { bookmarkData } = useBookmarkQuery();
+  const addBookmarkMutation = useAddBookmark();
+  const deleteBookmarkMutation = useDeleteBookmark();
 
   const onStudyRoomClick = () => {
     if (!user.isLogin) {
@@ -33,16 +35,12 @@ function StudyRoomCard({ roomData }) {
       goToLogin();
       return;
     }
-    saveBookmark(roomData.id)
-      .then((response) => setBookmark(response))
-      .catch((error) => console.error(error));
+    addBookmarkMutation.mutate(roomData.id);
   };
 
   const onBookmarkDeleteBtnClick = (event) => {
     event.stopPropagation();
-    removeBookmark()
-      .then(setBookmark(null))
-      .catch((error) => console.error(error));
+    deleteBookmarkMutation.mutate();
   };
 
   return (
@@ -50,7 +48,7 @@ function StudyRoomCard({ roomData }) {
       {isModal && <PasswordModal roomId={roomData.id} onClose={closeModal} />}
       <li className={styles.wrapper} onClick={onStudyRoomClick}>
         <Thumbnail>
-          {bookmark?.id !== roomData.id ? (
+          {bookmarkData?.id !== roomData.id ? (
             <button type="button" className={styles.bookmark_btn} onClick={onBookmarkAddBtnClick}>
               <BookMark />
             </button>
