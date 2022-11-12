@@ -35,7 +35,7 @@ export const handlers = [
     const SIZE_PER_PAGE = 16;
 
     const query = {
-      page: req.url.searchParams.get("page") ?? 0,
+      page: req.url.searchParams.get("page"),
       isPublic: req.url.searchParams.get("isPublic"),
       category: req.url.searchParams.get("category"),
       name: req.url.searchParams.get("name"),
@@ -44,7 +44,7 @@ export const handlers = [
     let result = studyroomList.filter(({ isPublic, category, name }) => {
       if (query.isPublic && isPublic === false) return false;
       if (query.category && category !== query.category) return false;
-      if (query.name && name.includes(query.name)) return false;
+      if (query.name && !name.includes(query.name)) return false;
       return true;
     });
 
@@ -53,7 +53,7 @@ export const handlers = [
     return res(
       ctx.delay(),
       ctx.status(200),
-      ctx.json(result.slice(query.page * SIZE_PER_PAGE, (query.page + 1) * SIZE_PER_PAGE)),
+      ctx.json(result.slice(query.page * SIZE_PER_PAGE, (+query.page + 1) * SIZE_PER_PAGE)),
     );
   }),
   rest.get("/user/info", (_, res, ctx) =>
