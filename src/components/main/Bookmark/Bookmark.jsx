@@ -1,48 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { bookmarkState } from "@recoil/bookmark-state";
-import { getBookmark } from "@api/bookmark-api";
 import { Thumbnail } from "@components/@commons";
+import { useBookmarkQuery } from "@hooks/@queries/bookmark-queries";
 import styles from "./Bookmark.module.css";
 
-const initialUsers = [
-  { id: 1, nickname: null, joinTime: null, isActive: false },
-  { id: 2, nickname: null, joinTime: null, isActive: false },
-  { id: 3, nickname: null, joinTime: null, isActive: false },
-  { id: 4, nickname: null, joinTime: null, isActive: false },
-  { id: 5, nickname: null, joinTime: null, isActive: false },
-];
-
 function Bookmark() {
-  const [bookmark, setBookmark] = useRecoilState(bookmarkState);
-  const { currentUsers, endAt, hashtags, limitUsers, name, participant, rule } = bookmark ?? {};
+  const { isLoading, bookmarkData } = useBookmarkQuery();
 
-  const [users, setUsers] = useState(initialUsers);
+  if (isLoading || !bookmarkData) return null;
 
-  useEffect(() => {
-    getBookmark()
-      .then((response) => setBookmark(response))
-      .catch((error) => console.error(error));
-  }, []);
-
-  // 북마크한 스터디룸의 현재 참여자 리스트
-  useEffect(() => {
-    if (!bookmark || !participant) return;
-
-    const updatedUsers = [...users];
-    for (let i = 0; i < users.length; i += 1) {
-      if (!participant[i]) {
-        updatedUsers[i] = { ...users[i], nickname: null, joinTime: null, isActive: false };
-      } else {
-        const nickname = participant[i].nickname;
-        const joinTime = participant[i].joinTime.split(/[T, .]/)[1];
-        updatedUsers[i] = { ...users[i], nickname, joinTime, isActive: true };
-      }
-    }
-    setUsers(updatedUsers);
-  }, [bookmark]);
-
-  if (!bookmark) return null;
+  const { currentUsers, endAt, hashtags, limitUsers, name, participant, rule } = bookmarkData;
 
   return (
     <div className={styles.container}>
@@ -80,15 +45,27 @@ function Bookmark() {
         </p>
       </div>
       <ul className={styles.ranking}>
-        {users.map((user) => (
-          <li key={user.id} className={user.isActive ? styles.active : ""}>
+        {participant.map(({ nickname, joinTime }, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <li key={i} className={styles.active}>
             <div className={styles.nickname}>
-              <span>{user.id}.&nbsp;</span>
-              <span>{user.nickname ?? "현재 스터디원"}</span>
+              <span>{i}.&nbsp;</span>
+              <span>{nickname}</span>
             </div>
-            <span className={styles.time}>{user.isActive ? `${user.joinTime} ~ 지금까지` : "없음"}</span>
+            <span className={styles.time}>{`${joinTime} ~ 지금까지`}</span>
           </li>
         ))}
+        {5 - participant.length > 0 &&
+          new Array(5 - participant.length).fill(0).map((_, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <li key={participant.length + i}>
+              <div className={styles.nickname}>
+                <span>{participant.length + i}.&nbsp;</span>
+                <span>현재 스터디원</span>
+              </div>
+              <span className={styles.time}>없음</span>
+            </li>
+          ))}
       </ul>
     </div>
   );
