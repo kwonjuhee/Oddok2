@@ -11,7 +11,7 @@ function SearchBrowse() {
   };
 
   const searchTitle = (text) => {
-    navigate({ pathname: "/search/studyroom", search: `?title=${text}` });
+    navigate({ pathname: "/search/studyroom", search: `?name=${text}` });
   };
 
   return (

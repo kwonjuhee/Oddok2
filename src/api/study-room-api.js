@@ -70,7 +70,7 @@ export const getStudyRoomList = async (searchParams, page) => {
       sort: searchParams.get("sort"),
       isPublic: searchParams.get("isPublic"),
       category: searchParams.get("category"),
-      name: searchParams.get("title"),
+      name: searchParams.get("name"),
       hashtag: searchParams.get("hashtag"),
       page,
     },

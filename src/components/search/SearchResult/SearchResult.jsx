@@ -20,7 +20,7 @@ function SearchResult() {
 
   return (
     <div className={styles.container}>
-      <h2>&ldquo;{searchParams.get("title") ?? `#${searchParams.get("hashtag")}`}&rdquo; 검색 결과</h2>
+      <h2>&ldquo;{searchParams.get("name") ?? `#${searchParams.get("hashtag")}`}&rdquo; 검색 결과</h2>
       <div>
         <h3>태그 필터</h3>
         <HashtagList onToggle={selectTagFilters} />

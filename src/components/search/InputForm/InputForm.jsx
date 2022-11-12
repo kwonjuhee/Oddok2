@@ -13,7 +13,7 @@ function InputForm() {
     if (titleRef.current.value === "") return;
     addHistory(titleRef.current.value);
 
-    navigate({ pathname: "/search/studyroom", search: `?title=${titleRef.current.value}` });
+    navigate({ pathname: "/search/studyroom", search: `?name=${titleRef.current.value}` });
   };
 
   const { pressEnter } = useInput(titleRef, () => {
