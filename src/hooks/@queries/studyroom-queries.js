@@ -52,7 +52,7 @@ export const useStudyRoomList = (searchParams, tagFilter) => {
     isLoading: isLoading || isFetchingNextPage,
     studyroomListData:
       (tagFilter.length > 0
-        ? studyroomListData.filter(({ hashtags }) => hashtags.some((e) => tagFilter.includes(e)))
+        ? studyroomListData.filter(({ hashtags }) => tagFilter.every((e) => hashtags.includes(e)))
         : studyroomListData) ?? [],
     fetchNextPage,
     hasNextPage,
