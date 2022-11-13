@@ -7,34 +7,30 @@ import styles from "./StudyRoomCardListHead.module.css";
 export default function StudyRoomCardListHead() {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const selectSearchParams = (param, value) => {
+    setSearchParams((prev) => {
+      if (value) prev.set(param, value);
+      else prev.delete(param, value);
+      return prev;
+    });
+  };
+
   return (
     <div className={styles.head}>
       <TabMenu
         defaultValue={searchParams.get("category")}
-        setCurrentCategory={(value) => {
-          if (!value) searchParams.delete("category");
-          else searchParams.set("category", value);
-          setSearchParams(searchParams);
-        }}
+        setCurrentCategory={(value) => selectSearchParams("category", value)}
       />
       <div className={styles.filters}>
         <Dropdown
           options={STUDY_FILTER_OPTIONS}
           defaultValue={searchParams.get("isPublic")}
-          onSelect={(value) => {
-            if (!value) searchParams.delete("isPublic");
-            else searchParams.set("isPublic", value);
-            setSearchParams(searchParams);
-          }}
+          onSelect={(value) => selectSearchParams("isPublic", value)}
         />
         <Dropdown
           options={STUDY_SORT_OPTIONS}
           defaultValue={searchParams.get("sort")}
-          onSelect={(value) => {
-            if (!value) searchParams.delete("sort");
-            else searchParams.set("sort", value);
-            setSearchParams(searchParams);
-          }}
+          onSelect={(value) => selectSearchParams("sort", value)}
         />
       </div>
     </div>
