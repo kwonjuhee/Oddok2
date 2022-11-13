@@ -40,7 +40,7 @@ export const USERLIMIT_OPTIONS = [
 
 export const STUDY_FILTER_OPTIONS = [
   { value: null, label: "전체" },
-  { value: true, label: "공개 스터디만" },
+  { value: "true", label: "공개 스터디만" },
 ];
 
 export const STUDY_SORT_OPTIONS = [
