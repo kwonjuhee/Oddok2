@@ -24,10 +24,10 @@ export const useStudyRoomQuery = (studyroomId) => {
   };
 };
 
-export const useStudyRoomList = (searchParams) => {
+export const useStudyRoomList = (searchParams, tagFilter) => {
   const {
     isLoading,
-    data: studyroomData,
+    data: studyroomListData,
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
@@ -50,7 +50,10 @@ export const useStudyRoomList = (searchParams) => {
 
   return {
     isLoading: isLoading || isFetchingNextPage,
-    studyroomData: studyroomData ?? [],
+    studyroomListData:
+      (tagFilter.length > 0
+        ? studyroomListData.filter(({ hashtags }) => hashtags.some((e) => tagFilter.includes(e)))
+        : studyroomListData) ?? [],
     fetchNextPage,
     hasNextPage,
   };

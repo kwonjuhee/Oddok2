@@ -1,9 +1,9 @@
 import React from "react";
-import styles from "./Skeleton.module.css";
+import styles from "./StudyRoomCardSkeleton.module.css";
 
-function Skeleton() {
+function StudyRoomCardSkeleton() {
   return (
-    <li>
+    <div>
       <div className={styles.thumbnail}>
         <div className={styles.shimmer} />
       </div>
@@ -13,8 +13,8 @@ function Skeleton() {
       <div className={styles.hashtag}>
         <div className={styles.shimmer} />
       </div>
-    </li>
+    </div>
   );
 }
 
-export default Skeleton;
+export default StudyRoomCardSkeleton;

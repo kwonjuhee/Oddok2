@@ -46,7 +46,7 @@ function StudyRoomCard({ roomData }) {
   return (
     <>
       {isModal && <PasswordModal roomId={roomData.id} onClose={closeModal} />}
-      <li className={styles.wrapper} onClick={onStudyRoomClick}>
+      <div className={styles.wrapper} onClick={onStudyRoomClick}>
         <Thumbnail>
           {bookmarkData?.id !== roomData.id ? (
             <button type="button" className={styles.bookmark_btn} onClick={onBookmarkAddBtnClick}>
@@ -73,7 +73,7 @@ function StudyRoomCard({ roomData }) {
             ))}
           </div>
         </div>
-      </li>
+      </div>
     </>
   );
 }

@@ -1,0 +1,14 @@
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  font-size: 0.75rem;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}

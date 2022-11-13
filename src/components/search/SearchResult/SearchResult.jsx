@@ -25,7 +25,7 @@ function SearchResult() {
         <h3>태그 필터</h3>
         <HashtagList onToggle={selectTagFilters} />
       </div>
-      <StudyRoomCardList tagFilter={selectedHashtag} />
+      <StudyRoomCardList tagFilter={[...selectedHashtag]} />
     </div>
   );
 }

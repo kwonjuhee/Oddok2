@@ -1,14 +1,14 @@
+/* eslint-disable react/no-array-index-key */
 import { useSearchParams } from "react-router-dom";
-import { Dropdown } from "@components/@commons";
-import { TabMenu, StudyRoomCardGrid } from "@components/main";
+import { StudyRoomCard, StudyRoomCardSkeleton } from "@components/main";
 import { ArrowDown } from "@icons";
-import { STUDY_FILTER_OPTIONS, STUDY_SORT_OPTIONS } from "@utils/constants/options";
 import { useStudyRoomList } from "@hooks/@queries/studyroom-queries";
+import StudyRoomCardListHead from "./StudyRoomCardListHead";
 import styles from "./StudyRoomCardList.module.css";
 
-function StudyRoomCardList({ tagFilter }) {
+function StudyRoomCardList({ tagFilter = [] }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { isLoading, studyroomData, fetchNextPage, hasNextPage } = useStudyRoomList(searchParams);
+  const { isLoading, studyroomListData, fetchNextPage, hasNextPage } = useStudyRoomList(searchParams, tagFilter);
 
   const clickMoreBtn = () => {
     fetchNextPage();
@@ -16,44 +16,27 @@ function StudyRoomCardList({ tagFilter }) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.head}>
-        <TabMenu
-          defaultValue={searchParams.get("category")}
-          setCurrentCategory={(value) => {
-            if (!value) searchParams.delete("category");
-            else searchParams.set("category", value);
-            setSearchParams(searchParams);
-          }}
-        />
-        <div className={styles.filters}>
-          <Dropdown
-            options={STUDY_FILTER_OPTIONS}
-            defaultValue={searchParams.get("isPublic")}
-            onSelect={(value) => {
-              if (!value) searchParams.delete("isPublic");
-              else searchParams.set("isPublic", value);
-              setSearchParams(searchParams);
-            }}
-          />
-          <Dropdown
-            options={STUDY_SORT_OPTIONS}
-            defaultValue={searchParams.get("sort")}
-            onSelect={(value) => {
-              if (!value) searchParams.delete("sort");
-              else searchParams.set("sort", value);
-              setSearchParams(searchParams);
-            }}
-          />
-        </div>
+      <StudyRoomCardListHead />
+      <div className={styles.content}>
+        <ul>
+          {studyroomListData.map((studyroomData) => (
+            <li key={studyroomData.id}>
+              <StudyRoomCard roomData={studyroomData} />
+            </li>
+          ))}
+          {isLoading &&
+            new Array(16).fill(0).map((_, i) => (
+              <li key={i}>
+                <StudyRoomCardSkeleton />
+              </li>
+            ))}
+        </ul>
+        {!isLoading && studyroomListData.length === 0 && (
+          <div className={styles.empty}>
+            <p>찾으시는 스터디룸이 없습니다.</p>
+          </div>
+        )}
       </div>
-      <StudyRoomCardGrid
-        isLoading={isLoading}
-        rooms={
-          tagFilter?.size > 0
-            ? studyroomData.filter(({ hashtags }) => hashtags.some((e) => [...tagFilter].includes(e)))
-            : studyroomData
-        }
-      />
       {hasNextPage && (
         <div className={styles.footer}>
           <button type="button" onClick={clickMoreBtn}>

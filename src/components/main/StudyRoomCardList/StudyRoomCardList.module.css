@@ -3,19 +3,19 @@
   flex-direction: column;
 }
 
-.head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
-  font-size: 0.75rem;
+.content > ul {
+  display: grid;
+  gap: 40px 20px;
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
-.filters {
+.empty {
   display: flex;
-  gap: 12px;
-  margin-left: auto;
+  flex-direction: column;
+  align-items: center;
+  padding: 130px 0;
+  color: var(--gray600);
 }
 
 .footer {
@@ -24,7 +24,7 @@
   padding: 40px;
 }
 
-.footer button {
+.footer > button {
   display: flex;
   justify-content: center;
   align-items: center;
