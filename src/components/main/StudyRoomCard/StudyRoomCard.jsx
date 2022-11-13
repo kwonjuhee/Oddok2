@@ -18,10 +18,6 @@ function StudyRoomCard({ roomData }) {
   const deleteBookmarkMutation = useDeleteBookmark();
 
   const onStudyRoomClick = () => {
-    if (!user.isLogin) {
-      goToLogin();
-      return;
-    }
     if (roomData.isPublic) {
       goToSetting(roomData.id);
     } else {
