@@ -1,8 +1,10 @@
 import React, { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { passwordAuthenticatedState } from "@recoil/studyroom-state";
 import { Modal, Input } from "@components/@commons";
-import { checkPassword } from "@api/study-room-api";
-import { useGoToPage, useInput } from "@hooks";
+import { useInput } from "@hooks";
+import { useCheckStudyRoomPassword } from "@hooks/@queries/studyroom-queries";
 import styles from "./PasswordModal.module.css";
 
 function PasswordModal() {
@@ -10,16 +12,19 @@ function PasswordModal() {
   const { roomId } = useParams();
   const inputRef = useRef();
   const [isInvalid, setIsInvalid] = useState(false);
-  const { goToSetting } = useGoToPage();
+  const { mutate } = useCheckStudyRoomPassword(roomId);
 
-  const onPasswordCheck = () => {
-    checkPassword(roomId, inputRef.current.value)
-      .then(() => goToSetting(roomId))
-      .catch(() => {
+  const checkStudyRoomPassword = () => {
+    mutate(inputRef.current.value, {
+      onSuccess: () => {
+        navigate(`/studyroom/${roomId}/setting`, { replace: true });
+      },
+      onError: () => {
         setIsInvalid(true);
         inputRef.current.value = "";
         inputRef.current.focus();
-      });
+      },
+    });
   };
 
   const onChange = () => {
@@ -32,7 +37,7 @@ function PasswordModal() {
     navigate(-1);
   };
 
-  const { pressEnter } = useInput(inputRef, onPasswordCheck);
+  const { pressEnter } = useInput(inputRef, checkStudyRoomPassword);
 
   const content = (
     <>
@@ -58,9 +63,7 @@ function PasswordModal() {
       onClose={onClose}
       onAction={{
         text: "확인",
-        action: () => {
-          onPasswordCheck();
-        },
+        action: checkStudyRoomPassword,
       }}
     />
   );

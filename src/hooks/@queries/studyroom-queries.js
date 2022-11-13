@@ -6,6 +6,7 @@ import {
   joinStudyRoom,
   updateStudyRoom,
   leaveStudyRoom,
+  checkPassword,
 } from "@api/study-room-api";
 import { useSetRecoilState } from "recoil";
 import { errorState } from "@recoil/error-state";
@@ -124,3 +125,8 @@ export const useLeaveStudyRoom = () => {
     },
   });
 };
+
+export const useCheckStudyRoomPassword = (roomId) =>
+  useMutation({
+    mutationFn: (enteredPassword) => checkPassword(roomId, enteredPassword),
+  });
