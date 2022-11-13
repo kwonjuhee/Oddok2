@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link, useLocation } from "react-router-dom";
 import { StudyRoomCard, StudyRoomCardSkeleton } from "@components/main";
 import { ArrowDown } from "@icons";
 import { useStudyRoomList } from "@hooks/@queries/studyroom-queries";
@@ -7,6 +7,7 @@ import StudyRoomCardListHead from "./StudyRoomCardListHead";
 import styles from "./StudyRoomCardList.module.css";
 
 function StudyRoomCardList({ tagFilter = [] }) {
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const { isLoading, studyroomListData, fetchNextPage, hasNextPage } = useStudyRoomList(searchParams, tagFilter);
 
@@ -21,7 +22,15 @@ function StudyRoomCardList({ tagFilter = [] }) {
         <ul>
           {studyroomListData.map((studyroomData) => (
             <li key={studyroomData.id}>
-              <StudyRoomCard roomData={studyroomData} />
+              {studyroomData.isPublic ? (
+                <Link to={`/studyroom/${studyroomData.id}/setting`}>
+                  <StudyRoomCard roomData={studyroomData} />
+                </Link>
+              ) : (
+                <Link to={`/check-password/${studyroomData.id}`} state={{ background: location }}>
+                  <StudyRoomCard roomData={studyroomData} />
+                </Link>
+              )}
             </li>
           ))}
           {isLoading &&

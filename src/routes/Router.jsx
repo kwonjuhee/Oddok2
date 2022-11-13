@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
+import { PasswordModal } from "@components/@commons";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 
@@ -17,9 +18,11 @@ const ShareStudyTime = lazy(() => import("@pages/ShareStudyTime/ShareStudyTime")
 const NotFoundPage = lazy(() => import("@pages/NotFoundPage/NotFoundPage"));
 
 function Router() {
+  const location = useLocation();
+
   return (
     <Suspense fallback={null}>
-      <Routes>
+      <Routes location={location.state?.background ?? location}>
         <Route path="/" element={<Main />} />
         <Route path="/search/*" element={<Search />} />
         <Route element={<PublicRoute />}>
@@ -36,6 +39,13 @@ function Router() {
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      {location.state?.background && (
+        <Routes>
+          <Route element={<PrivateRoute />}>
+            <Route path="/check-password/:roomId" element={<PasswordModal />} />
+          </Route>
+        </Routes>
+      )}
     </Suspense>
   );
 }

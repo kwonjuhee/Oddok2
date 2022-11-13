@@ -2,31 +2,22 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "@recoil/user-state";
-import { PasswordModal, Thumbnail, UserCount } from "@components/@commons";
+import { Thumbnail, UserCount } from "@components/@commons";
 import { Lock, Unlock, BookMark, BookMarkHeart } from "@icons";
-import { useModal, useGoToPage } from "@hooks";
+import { useGoToPage } from "@hooks";
 import { useBookmarkQuery, useAddBookmark, useDeleteBookmark } from "@hooks/@queries/bookmark-queries";
 import styles from "./StudyRoomCard.module.css";
 
 function StudyRoomCard({ roomData }) {
   const user = useRecoilValue(userState);
-  const { isModal, openModal, closeModal } = useModal();
-  const { goToLogin, goToSetting } = useGoToPage();
+  const { goToLogin } = useGoToPage();
 
   const { bookmarkData } = useBookmarkQuery();
   const addBookmarkMutation = useAddBookmark();
   const deleteBookmarkMutation = useDeleteBookmark();
 
-  const onStudyRoomClick = () => {
-    if (roomData.isPublic) {
-      goToSetting(roomData.id);
-    } else {
-      openModal();
-    }
-  };
-
-  const onBookmarkAddBtnClick = (event) => {
-    event.stopPropagation();
+  const onBookmarkAddBtnClick = (e) => {
+    e.preventDefault();
     if (!user.isLogin) {
       goToLogin();
       return;
@@ -34,43 +25,40 @@ function StudyRoomCard({ roomData }) {
     addBookmarkMutation.mutate(roomData.id);
   };
 
-  const onBookmarkDeleteBtnClick = (event) => {
-    event.stopPropagation();
+  const onBookmarkDeleteBtnClick = (e) => {
+    e.preventDefault();
     deleteBookmarkMutation.mutate();
   };
 
   return (
-    <>
-      {isModal && <PasswordModal roomId={roomData.id} onClose={closeModal} />}
-      <div className={styles.wrapper} onClick={onStudyRoomClick}>
-        <Thumbnail>
-          {bookmarkData?.id !== roomData.id ? (
-            <button type="button" className={styles.bookmark_btn} onClick={onBookmarkAddBtnClick}>
-              <BookMark />
-            </button>
-          ) : (
-            <button type="button" className={styles.bookmark_btn} onClick={onBookmarkDeleteBtnClick}>
-              <BookMarkHeart />
-            </button>
-          )}
-          <div className={styles.user_icon}>
-            <UserCount number={roomData.currentUsers} />
-            <span>/ {roomData.limitUsers}</span>
-          </div>
-        </Thumbnail>
-        <div className={styles.description}>
-          <div className={styles.title}>
-            <span className={styles.ellipsis}>{roomData.name}</span>
-            {roomData.isPublic ? <Unlock /> : <Lock />}
-          </div>
-          <div className={styles.ellipsis}>
-            {roomData.hashtags.map((hashtag) => (
-              <span key={hashtag}>#{hashtag} </span>
-            ))}
-          </div>
+    <div className={styles.wrapper}>
+      <Thumbnail>
+        {bookmarkData?.id !== roomData.id ? (
+          <button type="button" className={styles.bookmark_btn} onClick={onBookmarkAddBtnClick}>
+            <BookMark />
+          </button>
+        ) : (
+          <button type="button" className={styles.bookmark_btn} onClick={onBookmarkDeleteBtnClick}>
+            <BookMarkHeart />
+          </button>
+        )}
+        <div className={styles.user_icon}>
+          <UserCount number={roomData.currentUsers} />
+          <span>/ {roomData.limitUsers}</span>
+        </div>
+      </Thumbnail>
+      <div className={styles.description}>
+        <div className={styles.title}>
+          <span className={styles.ellipsis}>{roomData.name}</span>
+          {roomData.isPublic ? <Unlock /> : <Lock />}
+        </div>
+        <div className={styles.ellipsis}>
+          {roomData.hashtags.map((hashtag) => (
+            <span key={hashtag}>#{hashtag} </span>
+          ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

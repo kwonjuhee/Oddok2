@@ -1,10 +1,13 @@
 import React, { useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Modal, Input } from "@components/@commons";
 import { checkPassword } from "@api/study-room-api";
 import { useGoToPage, useInput } from "@hooks";
 import styles from "./PasswordModal.module.css";
 
-function PasswordModal({ roomId, onClose }) {
+function PasswordModal() {
+  const navigate = useNavigate();
+  const { roomId } = useParams();
   const inputRef = useRef();
   const [isInvalid, setIsInvalid] = useState(false);
   const { goToSetting } = useGoToPage();
@@ -23,6 +26,10 @@ function PasswordModal({ roomId, onClose }) {
     if (isInvalid) {
       setIsInvalid(false);
     }
+  };
+
+  const onClose = () => {
+    navigate(-1);
   };
 
   const { pressEnter } = useInput(inputRef, onPasswordCheck);
