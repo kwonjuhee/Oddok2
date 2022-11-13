@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 import axios from "axios";
-import AuthError from "@api/error/AuthError";
-import { AUTH_ERROR } from "@utils/constants/API_ERROR";
+import CustomError from "@api/error/CustomError";
 import { kakaoConfig } from "@api/auth/kakao";
 import axiosInstance from "@api/axios-config";
 
@@ -28,7 +27,10 @@ export const getKakaoToken = async (code) => {
     );
     return response;
   } catch (error) {
-    throw new AuthError(error, AUTH_ERROR.LOGIN.message, AUTH_ERROR.LOGIN.action);
+    throw new CustomError("로그인에 실패했습니다. 다시 시도해주시기 바랍니다.", {
+      text: "다시 로그인하기",
+      path: "/login",
+    });
   }
 };
 
@@ -38,7 +40,10 @@ export const getAuthToken = async (token) => {
     const response = await axios.get(`/auth?token=${token}`);
     return response;
   } catch (error) {
-    throw new AuthError(error, AUTH_ERROR.LOGIN.message, AUTH_ERROR.LOGIN.action);
+    throw new CustomError("로그인에 실패했습니다. 다시 시도해주시기 바랍니다.", {
+      text: "다시 로그인하기",
+      path: "/login",
+    });
   }
 };
 
@@ -49,14 +54,10 @@ export const login = async (code) => {
 };
 
 export const getNewToken = async () => {
-  try {
-    const response = await axios.get("/auth/refresh", {
-      withCredentials: true,
-    });
-    onLoginSuccess(response);
-  } catch (error) {
-    throw new AuthError(error);
-  }
+  const response = await axios.get("/auth/refresh", {
+    withCredentials: true,
+  });
+  onLoginSuccess(response);
 };
 
 const onLoginSuccess = (response) => {
@@ -71,7 +72,7 @@ export const logout = async () => {
     const response = await axiosInstance.get("/auth/logout");
     return response;
   } catch (error) {
-    throw new AuthError(error, AUTH_ERROR.LOGOUT);
+    throw new CustomError("로그아웃에 실패했습니다. 다시 시도해주시기 바랍니다.");
   }
 };
 
@@ -80,6 +81,6 @@ export const deleteAccount = async () => {
     const response = await axiosInstance.get("/auth/leave");
     return response;
   } catch (error) {
-    throw new AuthError(error, AUTH_ERROR.DELETE_ACCOUNT.message, AUTH_ERROR.DELETE_ACCOUNT.action);
+    throw new CustomError("계정 삭제에 실패했습니다. 다시 시도해주시기 바랍니다.", { text: "확인", path: "/mypage" });
   }
 };

@@ -21,7 +21,7 @@ function ErrorModal() {
     error && (
       <Modal
         title="⚠️"
-        content={error.userMessage ?? error.message}
+        content={error.message}
         onClose={handleClose}
         onAction={{
           text: error.action?.text ?? "메인으로 이동하기",

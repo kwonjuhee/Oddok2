@@ -1,8 +1,7 @@
 class OpenviduError extends Error {
   constructor(error, userMessage) {
-    super(error.message);
+    super(userMessage ?? error.message);
     this.status = error.code;
-    this.userMessage = userMessage;
   }
 }
 
