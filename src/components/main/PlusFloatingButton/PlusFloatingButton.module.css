@@ -1,0 +1,14 @@
+.container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+}
+
+.container > button {
+  width: 54px;
+  height: 54px;
+  padding: 12px;
+  background: linear-gradient(to bottom right, var(--primary), orange);
+  border-radius: 50%;
+  color: black;
+}
