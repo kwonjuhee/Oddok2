@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { createProfile, updateProfile } from "@api/mypage-api";
 import { Modal, Calendar, Input, Dropdown, Textarea } from "@components/@commons";
+import { useMyGoalQuery, useMyGoalMutation } from "@hooks/@queries/mypage-queries";
 import { dateParsing, dateFormatting } from "@utils";
 import { TARGET_TIME_OPTIONS } from "@utils/constants/options";
 import styles from "./MyGoalEditModal.module.css";
 
-function MyGoalEditModal({ profileData, onClose, refetch }) {
-  const [inputData, setInputData] = useState(profileData);
-  const isValid = inputData?.dday && inputData?.ddayInfo;
+function MyGoalEditModal({ onClose }) {
+  const { myGoalData = {} } = useMyGoalQuery();
+  const { mutate } = useMyGoalMutation();
+
+  const [inputData, setInputData] = useState(myGoalData);
+
+  const isValid = inputData.dday && inputData.ddayInfo;
 
   const selectDate = (date) => {
     setInputData((prev) => ({ ...prev, dday: dateFormatting(date) }));
@@ -25,14 +29,8 @@ function MyGoalEditModal({ profileData, onClose, refetch }) {
     setInputData((prev) => ({ ...prev, goal: e.target.value }));
   };
 
-  const edit = async () => {
-    try {
-      if (profileData) await updateProfile(inputData);
-      else await createProfile(inputData);
-      refetch();
-    } catch (e) {
-      console.error(e);
-    }
+  const editMyGoal = () => {
+    mutate(inputData);
   };
 
   const content = (
@@ -43,21 +41,21 @@ function MyGoalEditModal({ profileData, onClose, refetch }) {
           <Calendar
             onChange={selectDate}
             placeholderText="날짜를 선택해주세요"
-            defaultDate={inputData?.dday && dateParsing(inputData.dday)}
+            defaultDate={inputData.dday ? dateParsing(inputData.dday) : null}
           />
-          <Input onChange={inputDdayInfo} placeholder="디데이 제목을 입력해주세요" value={inputData?.ddayInfo || ""} />
+          <Input onChange={inputDdayInfo} placeholder="디데이 제목을 입력해주세요" value={inputData.ddayInfo} />
         </div>
       </div>
       <div className={styles.item}>
         <h3>공부시간</h3>
         <div>
-          <Dropdown options={TARGET_TIME_OPTIONS} onSelect={selectTargetTime} defaultValue={inputData?.targetTime} />
+          <Dropdown options={TARGET_TIME_OPTIONS} onSelect={selectTargetTime} defaultValue={inputData.targetTime} />
         </div>
       </div>
       <div className={styles.item}>
         <h3>목표</h3>
         <div className={styles.textarea}>
-          <Textarea onChange={inputGoal} value={inputData?.goal || ""} />
+          <Textarea onChange={inputGoal} value={inputData.goal ?? ""} />
         </div>
       </div>
     </div>
@@ -70,7 +68,7 @@ function MyGoalEditModal({ profileData, onClose, refetch }) {
       onAction={{
         text: "확인",
         action: () => {
-          edit();
+          editMyGoal();
           onClose();
         },
       }}

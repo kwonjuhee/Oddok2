@@ -1,16 +1,16 @@
 import React from "react";
-import { useAsync, useModal } from "@hooks";
-import { getMyRoom } from "@api/mypage-api";
+import { useModal } from "@hooks";
 import { MyRoom, EditButton, MyRoomEditModal } from "@components/mypage";
+import { useMyRoomQuery } from "@hooks/@queries/mypage-queries";
 import styles from "./MyRoomSection.module.css";
 
 function MyRoomSection() {
-  const { data: myRoomData, request: refetchMyRoom } = useAsync({ requestFn: getMyRoom, skip: false });
+  const { myRoomData } = useMyRoomQuery();
   const { isModal, openModal, closeModal } = useModal();
 
   return (
     <>
-      {isModal && <MyRoomEditModal roomData={myRoomData} onClose={closeModal} refetch={refetchMyRoom} />}
+      {isModal && <MyRoomEditModal onClose={closeModal} />}
       <section>
         <div className={styles.heading}>
           <h2>생성 스터디룸</h2>

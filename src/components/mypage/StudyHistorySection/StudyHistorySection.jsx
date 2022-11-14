@@ -1,43 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { getTimeRecordList } from "@api/mypage-api";
 import { TimeTable } from "@components/@commons";
 import { DatePicker, TimeRecordList } from "@components/mypage";
-import { getColor, dateFormatting } from "@utils";
+import { useTimeRecordQuery } from "@hooks/@queries/mypage-queries";
+import { dateFormatting } from "@utils";
 import styles from "./StudyHistorySection.module.css";
 
 function StudyHistorySection() {
   const location = useLocation();
   const isSharePage = location.pathname === "/share/study-time";
   const [selectedDate, setSelectedDate] = useState(dateFormatting(new Date()));
-  const [timeRecordData, setTimeRecordData] = useState();
-  const [totalStudyTime, setTotalStudyTime] = useState(0);
-
-  const fetchTimeRecordData = async (date) => {
-    const response = await getTimeRecordList(date);
-    let total = 0;
-    const array = response.map((data, i) => {
-      const diff = new Date(data.endTime) - new Date(data.startTime);
-      total += diff;
-      return {
-        ...data,
-        startTime: new Date(data.startTime),
-        endTime: new Date(data.endTime),
-        color: getColor(i),
-        studyTime: new Date(diff).toISOString().slice(11, 19),
-      };
-    });
-    setTimeRecordData(array);
-    setTotalStudyTime(total);
-  };
-
-  useEffect(() => {
-    try {
-      fetchTimeRecordData(selectedDate);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [selectedDate]);
+  const { timeRecordList, totalStudyTime } = useTimeRecordQuery(selectedDate);
 
   return (
     <section>
@@ -58,13 +31,13 @@ function StudyHistorySection() {
                   ${Math.floor((totalStudyTime / 1000 / 60) % 60)}분 
                   ${Math.floor(totalStudyTime / 1000) % 60}초`}
               </span>
-              <TimeRecordList list={timeRecordData} />
+              <TimeRecordList list={timeRecordList} />
             </div>
           </div>
         </div>
         <div className={`${styles.right_box} ${isSharePage ? styles.share : ""}`}>
           <div className={styles.sub_heading}>시간표</div>
-          <TimeTable timeRecordList={timeRecordData} />
+          <TimeTable timeRecordList={timeRecordList} />
         </div>
       </div>
     </section>

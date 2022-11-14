@@ -1,37 +1,29 @@
 import React, { useState } from "react";
-import { updateStudyRoom } from "@api/study-room-api";
-import { deleteStudyRoom } from "@api/mypage-api";
 import { Modal } from "@components/@commons";
 import { SettingForm } from "@components/studyroom";
 import { MyRoom, EditButton } from "@components/mypage";
+import { useMyRoomQuery, useUpdateMyRoom, useDeleteMyRoom } from "@hooks/@queries/mypage-queries";
 import styles from "./MyRoomEditModal.module.css";
 
-function MyRoomEditModal({ roomData, onClose, refetch }) {
-  const [inputData, setInputData] = useState(roomData);
+function MyRoomEditModal({ onClose }) {
+  const { myRoomData } = useMyRoomQuery();
+  const [inputData, setInputData] = useState(myRoomData);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const updateMyRoomMutation = useUpdateMyRoom();
+  const deleteMyRoomMutation = useDeleteMyRoom();
 
-  const editHandler = () => {
+  const editMyRoomHandler = () => {
     setIsFormOpen(true);
   };
 
-  const updateMyRoom = async () => {
-    try {
-      await updateStudyRoom(roomData.id, inputData);
-      refetch();
-    } catch (e) {
-      console.error(e);
-    }
+  const updateMyRoomHandler = () => {
+    updateMyRoomMutation.mutate({ roomId: myRoomData.id, newRoomInfo: inputData });
   };
 
-  const deleteHandler = async () => {
-    try {
-      if (window.confirm("정말로 삭제하시겠습니까?")) {
-        await deleteStudyRoom(roomData.id);
-        refetch();
-        onClose();
-      }
-    } catch (e) {
-      console.error(e);
+  const deleteMyRoomHandler = () => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      deleteMyRoomMutation.mutate(myRoomData.id);
+      onClose();
     }
   };
 
@@ -41,16 +33,21 @@ function MyRoomEditModal({ roomData, onClose, refetch }) {
       <div className={styles.item}>
         <MyRoom roomData={inputData} />
         <div className={styles.buttons}>
-          <EditButton onClick={editHandler} />
-          <EditButton onClick={deleteHandler} deleteBtn />
+          <EditButton onClick={editMyRoomHandler} />
+          <EditButton onClick={deleteMyRoomHandler} deleteBtn />
         </div>
       </div>
     </div>
   );
+
   return (
     <div>
       {isFormOpen ? (
-        <SettingForm roomData={roomData} onClose={() => setIsFormOpen(false)} onUpdate={(data) => setInputData(data)} />
+        <SettingForm
+          roomData={myRoomData}
+          onClose={() => setIsFormOpen(false)}
+          onUpdate={(data) => setInputData(data)}
+        />
       ) : (
         <Modal
           title="스터디룸 수정"
@@ -59,7 +56,7 @@ function MyRoomEditModal({ roomData, onClose, refetch }) {
           onAction={{
             text: "확인",
             action: () => {
-              updateMyRoom();
+              updateMyRoomHandler();
               onClose();
             },
           }}
