@@ -16,7 +16,6 @@ export const useStudyRoomQuery = (studyroomId) => {
   const { isLoading, data } = useQuery({
     queryKey: ["studyroomInfo", studyroomId],
     queryFn: () => getStudyRoom(studyroomId),
-    staleTime: 30000,
   });
 
   return {

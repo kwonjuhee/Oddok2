@@ -9,7 +9,6 @@ export const useBookmarkQuery = () => {
   const { isLoading, data: bookmarkData } = useQuery({
     queryKey: ["bookmark"],
     queryFn: getBookmark,
-    staleTime: 30000,
     enabled: !!isLogin,
     select: (data) =>
       data

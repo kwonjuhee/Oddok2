@@ -16,7 +16,6 @@ export const useMyGoalQuery = () => {
   const { data: myGoalData } = useQuery({
     queryKey: ["myGoal"],
     queryFn: getProfile,
-    staleTime: 30000,
   });
 
   return {
@@ -56,7 +55,6 @@ export const useTimeRecordQuery = (date) => {
   const { data: timeRecordData } = useQuery({
     queryKey: ["timeRecordList", date],
     queryFn: () => getTimeRecordList(date),
-    staleTime: 30000,
     select: (data) => {
       let totalStudyTime = 0;
 
@@ -93,7 +91,6 @@ export const useMyRoomQuery = () => {
   const { data: myRoomData } = useQuery({
     queryKey: ["myRoom"],
     queryFn: getMyRoom,
-    staleTime: 30000,
   });
 
   return {
