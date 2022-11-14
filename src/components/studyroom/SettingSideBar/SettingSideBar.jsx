@@ -8,7 +8,7 @@ import styles from "./SettingSideBar.module.css";
 function SettingSideBar({ session, showEditBtn }) {
   const { roomId } = useParams();
   const { studyroomData } = useStudyRoomQuery(roomId);
-  const { mutate } = useUpdateStudyRoom(roomId);
+  const { mutate } = useUpdateStudyRoom();
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const toggleSettingForm = () => setIsFormOpen((prev) => !prev);

@@ -100,14 +100,14 @@ export const useJoinStudyRoom = () => {
   });
 };
 
-export const useUpdateStudyRoom = (studyroomId) => {
+export const useUpdateStudyRoom = () => {
   const queryClient = useQueryClient();
   const setError = useSetRecoilState(errorState);
 
   return useMutation({
     mutationFn: ({ roomId, newRoomInfo }) => updateStudyRoom(roomId, newRoomInfo),
-    onSuccess: (newRoomInfo) => {
-      queryClient.setQueryData(["studyroomInfo", studyroomId], newRoomInfo);
+    onSuccess: (newRoomInfo, { roomId }) => {
+      queryClient.setQueryData(["studyroomInfo", roomId], newRoomInfo);
     },
     onError: (error) => {
       setError(error);
