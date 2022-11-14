@@ -33,37 +33,9 @@ function MyGoalEditModal({ onClose }) {
     mutate(inputData);
   };
 
-  const content = (
-    <div className={styles.box}>
-      <div className={styles.item}>
-        <h3>디데이</h3>
-        <div className={styles.dday}>
-          <Calendar
-            onChange={selectDate}
-            placeholderText="날짜를 선택해주세요"
-            defaultDate={inputData.dday ? dateParsing(inputData.dday) : null}
-          />
-          <Input onChange={inputDdayInfo} placeholder="디데이 제목을 입력해주세요" value={inputData.ddayInfo} />
-        </div>
-      </div>
-      <div className={styles.item}>
-        <h3>공부시간</h3>
-        <div>
-          <Dropdown options={TARGET_TIME_OPTIONS} onSelect={selectTargetTime} defaultValue={inputData.targetTime} />
-        </div>
-      </div>
-      <div className={styles.item}>
-        <h3>목표</h3>
-        <div className={styles.textarea}>
-          <Textarea onChange={inputGoal} value={inputData.goal ?? ""} />
-        </div>
-      </div>
-    </div>
-  );
   return (
     <Modal
       title="목표 수정"
-      content={content}
       onClose={onClose}
       onAction={{
         text: "확인",
@@ -73,7 +45,33 @@ function MyGoalEditModal({ onClose }) {
         },
       }}
       disabled={!isValid}
-    />
+    >
+      <div className={styles.box}>
+        <div className={styles.item}>
+          <h3>디데이</h3>
+          <div className={styles.dday}>
+            <Calendar
+              onChange={selectDate}
+              placeholderText="날짜를 선택해주세요"
+              defaultDate={inputData.dday ? dateParsing(inputData.dday) : null}
+            />
+            <Input onChange={inputDdayInfo} placeholder="디데이 제목을 입력해주세요" value={inputData.ddayInfo} />
+          </div>
+        </div>
+        <div className={styles.item}>
+          <h3>공부시간</h3>
+          <div>
+            <Dropdown options={TARGET_TIME_OPTIONS} onSelect={selectTargetTime} defaultValue={inputData.targetTime} />
+          </div>
+        </div>
+        <div className={styles.item}>
+          <h3>목표</h3>
+          <div className={styles.textarea}>
+            <Textarea onChange={inputGoal} value={inputData.goal ?? ""} />
+          </div>
+        </div>
+      </div>
+    </Modal>
   );
 }
 

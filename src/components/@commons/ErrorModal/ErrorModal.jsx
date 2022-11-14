@@ -21,13 +21,14 @@ function ErrorModal() {
     error && (
       <Modal
         title="⚠️"
-        content={error.message}
         onClose={handleClose}
         onAction={{
           text: error.action?.text ?? "메인으로 이동하기",
           action: () => redirect(error.action?.path ?? "/"),
         }}
-      />
+      >
+        {error.message}
+      </Modal>
     )
   );
 }

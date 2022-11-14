@@ -27,19 +27,6 @@ function MyRoomEditModal({ onClose }) {
     }
   };
 
-  const content = (
-    <div className={styles.box}>
-      <h3>생성 스터디룸</h3>
-      <div className={styles.item}>
-        <MyRoom roomData={inputData} />
-        <div className={styles.buttons}>
-          <EditButton onClick={editMyRoomHandler} />
-          <EditButton onClick={deleteMyRoomHandler} deleteBtn />
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div>
       {isFormOpen ? (
@@ -51,7 +38,6 @@ function MyRoomEditModal({ onClose }) {
       ) : (
         <Modal
           title="스터디룸 수정"
-          content={content}
           onClose={onClose}
           onAction={{
             text: "확인",
@@ -60,7 +46,18 @@ function MyRoomEditModal({ onClose }) {
               onClose();
             },
           }}
-        />
+        >
+          <div className={styles.box}>
+            <h3>생성 스터디룸</h3>
+            <div className={styles.item}>
+              <MyRoom roomData={inputData} />
+              <div className={styles.buttons}>
+                <EditButton onClick={editMyRoomHandler} />
+                <EditButton onClick={deleteMyRoomHandler} deleteBtn />
+              </div>
+            </div>
+          </div>
+        </Modal>
       )}
     </div>
   );

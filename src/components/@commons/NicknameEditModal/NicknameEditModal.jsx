@@ -36,17 +36,9 @@ function NicknameEditModal({ onClose }) {
     isDisabled,
   );
 
-  const content = (
-    <label htmlFor="nickname">
-      <p className={styles.content}>닉네임</p>
-      <Input ref={inputRef} value={nickname} maxLength="8" onChange={onChange} onKeyPress={pressEnter} />
-    </label>
-  );
-
   return (
     <Modal
       title="닉네임 수정"
-      content={content}
       onClose={onClose}
       onAction={{
         text: "확인",
@@ -56,7 +48,12 @@ function NicknameEditModal({ onClose }) {
         },
       }}
       disabled={isDisabled}
-    />
+    >
+      <label htmlFor="nickname">
+        <p className={styles.content}>닉네임</p>
+        <Input ref={inputRef} value={nickname} maxLength="8" onChange={onChange} onKeyPress={pressEnter} />
+      </label>
+    </Modal>
   );
 }
 

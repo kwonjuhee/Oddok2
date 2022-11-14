@@ -39,8 +39,15 @@ function PasswordModal() {
 
   const { pressEnter } = useInput(inputRef, checkStudyRoomPassword);
 
-  const content = (
-    <>
+  return (
+    <Modal
+      title="비밀번호"
+      onClose={onClose}
+      onAction={{
+        text: "확인",
+        action: checkStudyRoomPassword,
+      }}
+    >
       <label htmlFor="password">
         <p className={styles.content}>비공개 스터디입니다. 비밀번호를 입력해주세요.</p>
         <Input
@@ -53,19 +60,7 @@ function PasswordModal() {
         />
       </label>
       {isInvalid && <p className={styles.error}>비밀번호를 잘못 입력했습니다. 다시 입력해주세요.</p>}
-    </>
-  );
-
-  return (
-    <Modal
-      title="비밀번호"
-      content={content}
-      onClose={onClose}
-      onAction={{
-        text: "확인",
-        action: checkStudyRoomPassword,
-      }}
-    />
+    </Modal>
   );
 }
 

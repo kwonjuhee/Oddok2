@@ -4,7 +4,7 @@ import { Close } from "@icons";
 import useOutSideClick from "@hooks/useOutSideClick";
 import styles from "./Modal.module.css";
 
-function Modal({ title, content, onClose, onAction, onSubAction, disabled }) {
+function Modal({ title, onClose, onAction, onSubAction, disabled, children }) {
   const modalRef = useRef();
 
   useOutSideClick(modalRef, onClose);
@@ -20,7 +20,7 @@ function Modal({ title, content, onClose, onAction, onSubAction, disabled }) {
               <Close />
             </div>
           </header>
-          <div className={styles.content}>{content}</div>
+          <div className={styles.content}>{children}</div>
           <footer>
             {onSubAction && (
               <button className={styles.sub_btn} type="button" onClick={onSubAction.action}>

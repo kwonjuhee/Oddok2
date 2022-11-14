@@ -22,12 +22,9 @@ function AccountDeleteModal({ onClose }) {
 
   return (
     <>
-      <Modal
-        title="계정 삭제"
-        content="ODDOK 계정을 삭제하시겠습니까?"
-        onClose={onClose}
-        onAction={{ text: "삭제하기", action: onDeleteAccount }}
-      />
+      <Modal title="계정 삭제" onClose={onClose} onAction={{ text: "삭제하기", action: onDeleteAccount }}>
+        ODDOK 계정을 삭제하시겠습니까?
+      </Modal>
       {isLoading && <Loading />}
     </>
   );
