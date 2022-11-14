@@ -3,6 +3,7 @@ import axios from "axios";
 import CustomError from "@api/error/CustomError";
 import { kakaoConfig } from "@api/auth/kakao";
 import axiosInstance from "@api/axios-config";
+import { ERROR_MESSAGES } from "@utils/constants/messages";
 
 const JWT_EXPIRY_TIME = 6 * 3600 * 1000; // JWT AccessToken 만료시간 (6시간)
 
@@ -27,7 +28,7 @@ export const getKakaoToken = async (code) => {
     );
     return response;
   } catch (error) {
-    throw new CustomError("로그인에 실패했습니다. 다시 시도해주시기 바랍니다.", {
+    throw new CustomError(ERROR_MESSAGES.LOGIN, {
       text: "다시 로그인하기",
       path: "/login",
     });
@@ -40,7 +41,7 @@ export const getAuthToken = async (token) => {
     const response = await axios.get(`/auth?token=${token}`);
     return response;
   } catch (error) {
-    throw new CustomError("로그인에 실패했습니다. 다시 시도해주시기 바랍니다.", {
+    throw new CustomError(ERROR_MESSAGES.LOGIN, {
       text: "다시 로그인하기",
       path: "/login",
     });
@@ -72,7 +73,7 @@ export const logout = async () => {
     const response = await axiosInstance.get("/auth/logout");
     return response;
   } catch (error) {
-    throw new CustomError("로그아웃에 실패했습니다. 다시 시도해주시기 바랍니다.");
+    throw new CustomError(ERROR_MESSAGES.LOGOUT);
   }
 };
 
@@ -81,6 +82,6 @@ export const deleteAccount = async () => {
     const response = await axiosInstance.get("/auth/leave");
     return response;
   } catch (error) {
-    throw new CustomError("계정 삭제에 실패했습니다. 다시 시도해주시기 바랍니다.", { text: "확인", path: "/mypage" });
+    throw new CustomError(ERROR_MESSAGES.DELETE_ACCOUNT, { text: "확인", path: "/mypage" });
   }
 };
