@@ -1,8 +1,8 @@
-/* eslint-disable no-param-reassign */
 import axios from "axios";
 import { getNewToken } from "./auth/auth-api";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
 const axiosInstance = axios.create({
   timeout: 30000,
   header: {
@@ -10,21 +10,55 @@ const axiosInstance = axios.create({
   },
 });
 
-axiosInstance.interceptors.response.use(
-  async (res) => {
-    if (process.env.NODE_ENV === "development") {
-      // eslint-disable-next-line no-promise-executor-return
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+let isTokenReissuing = false;
+let tokenReissueSubsribers = [];
+
+const subscribe = (callback) => {
+  tokenReissueSubsribers.push(callback);
+};
+
+const unsubscribeAll = () => {
+  tokenReissueSubsribers = [];
+};
+
+const onTokenReissued = () => {
+  tokenReissueSubsribers.forEach((callback) => callback());
+};
+
+const handleTokenReissue = async (config) => {
+  try {
+    const retryOriginalRequest = new Promise((resolve) => {
+      subscribe(() => {
+        resolve(axiosInstance.request(config));
+      });
+    });
+
+    if (!isTokenReissuing) {
+      isTokenReissuing = true;
+      await getNewToken();
+      isTokenReissuing = false;
+
+      onTokenReissued();
+      unsubscribeAll();
     }
-    return res.data;
-  },
+
+    return retryOriginalRequest;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+axiosInstance.interceptors.response.use(
+  async (res) => res.data,
   async (error) => {
     const { config, response } = error;
+
     if (response.status === 401 && response.data.message === "로그인이 되어 있지 않습니다.") {
-      await getNewToken();
-      return axiosInstance.request(config);
+      // eslint-disable-next-line no-return-await
+      return await handleTokenReissue(config);
     }
-    throw new Error(error.response.data.massage, error.response.status);
+
+    return Promise.reject(error);
   },
 );
 
