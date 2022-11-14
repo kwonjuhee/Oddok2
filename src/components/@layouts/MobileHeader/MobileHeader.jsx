@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Search, Profile } from "@icons";
 import { useGoToPage } from "@hooks";
+import { useFetchUserInfo } from "@hooks/@queries/user-queries";
 import ProfileSideBar from "./ProfileSideBar";
 import styles from "./MobileHeader.module.css";
 
 function MobileHeader() {
-  const { goToSearch } = useGoToPage();
+  const { goToSearch, goToLogin } = useGoToPage();
   const [isOpenProfileSideBar, setIsOpenProfileSideBar] = useState(false);
+  const { isLogin } = useFetchUserInfo();
 
   const toggleProfileSideBar = () => setIsOpenProfileSideBar((prev) => !prev);
 
@@ -18,7 +20,7 @@ function MobileHeader() {
           <button type="button" onClick={goToSearch}>
             <Search />
           </button>
-          <button type="button" onClick={toggleProfileSideBar}>
+          <button type="button" onClick={isLogin ? toggleProfileSideBar : goToLogin}>
             <Profile />
           </button>
         </div>
