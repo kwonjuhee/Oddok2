@@ -2,6 +2,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";
 import { userState } from "@recoil/user-state";
 import { getBookmark, saveBookmark, removeBookmark } from "@api/bookmark-api";
+import { useToast } from "@hooks/useToast";
+import { ERROR_MESSAGES } from "@utils/constants/messages";
 
 export const useBookmarkQuery = () => {
   const { isLogin } = useRecoilValue(userState);
@@ -38,11 +40,15 @@ export const useAddBookmark = () => {
 
 export const useDeleteBookmark = () => {
   const queryclient = useQueryClient();
+  const { displayToast } = useToast();
 
   return useMutation({
     mutationFn: removeBookmark,
     onSuccess: () => {
       queryclient.setQueryData(["bookmark"], null);
+    },
+    onError: () => {
+      displayToast({ message: ERROR_MESSAGES.COMMON });
     },
   });
 };

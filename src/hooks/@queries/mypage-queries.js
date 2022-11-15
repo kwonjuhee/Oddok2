@@ -1,6 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSetRecoilState } from "recoil";
-import { errorState } from "@recoil/error-state";
 import {
   getProfile,
   createProfile,
@@ -10,6 +8,8 @@ import {
   deleteStudyRoom,
 } from "@api/mypage-api";
 import { updateStudyRoom } from "@api/study-room-api";
+import { useToast } from "@hooks/useToast";
+import { SUCCESS_MESSAGES, ERROR_MESSAGES } from "@utils/constants/messages";
 import { COLORS } from "@utils/constants/time_record_colors";
 
 export const useMyGoalQuery = () => {
@@ -26,15 +26,16 @@ export const useMyGoalQuery = () => {
 export const useMyGoalMutation = () => {
   const queryClient = useQueryClient();
   const { myGoalData } = useMyGoalQuery();
-  const setError = useSetRecoilState(errorState);
+  const { displayToast } = useToast();
 
   const createMyGoalMutation = useMutation({
     mutationFn: createProfile,
     onSuccess: (newMyGoalData) => {
       queryClient.setQueryData(["myGoal"], newMyGoalData);
+      displayToast({ message: SUCCESS_MESSAGES.MY_GOAL_EDIT });
     },
-    onError: (error) => {
-      setError(error);
+    onError: () => {
+      displayToast({ message: ERROR_MESSAGES.COMMON });
     },
   });
 
@@ -42,9 +43,10 @@ export const useMyGoalMutation = () => {
     mutationFn: updateProfile,
     onSuccess: (newMyGoalData) => {
       queryClient.setQueryData(["myGoal"], newMyGoalData);
+      displayToast({ message: SUCCESS_MESSAGES.MY_GOAL_EDIT });
     },
-    onError: (error) => {
-      setError(error);
+    onError: () => {
+      displayToast({ message: ERROR_MESSAGES.COMMON });
     },
   });
 
@@ -100,30 +102,32 @@ export const useMyRoomQuery = () => {
 
 export const useUpdateMyRoom = () => {
   const queryClient = useQueryClient();
-  const setError = useSetRecoilState(errorState);
+  const { displayToast } = useToast();
 
   return useMutation({
     mutationFn: ({ roomId, newRoomInfo }) => updateStudyRoom(roomId, newRoomInfo),
     onSuccess: (newRoomInfo) => {
       queryClient.setQueryData(["myRoom"], newRoomInfo);
+      displayToast({ message: SUCCESS_MESSAGES.STUDYROOM_EDIT });
     },
-    onError: (error) => {
-      setError(error);
+    onError: () => {
+      displayToast({ message: ERROR_MESSAGES.COMMON });
     },
   });
 };
 
 export const useDeleteMyRoom = () => {
   const queryClient = useQueryClient();
-  const setError = useSetRecoilState(errorState);
+  const { displayToast } = useToast();
 
   return useMutation({
     mutationFn: (roomId) => deleteStudyRoom(roomId),
     onSuccess: () => {
       queryClient.setQueryData(["myRoom"], null);
+      displayToast({ message: SUCCESS_MESSAGES.STUDYROOM_DELETE });
     },
-    onError: (error) => {
-      setError(error);
+    onError: () => {
+      displayToast({ message: ERROR_MESSAGES.COMMON });
     },
   });
 };

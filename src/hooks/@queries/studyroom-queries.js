@@ -11,6 +11,8 @@ import {
 import { useSetRecoilState } from "recoil";
 import { errorState } from "@recoil/error-state";
 import { loadingState } from "@recoil/loading-state";
+import { useToast } from "@hooks/useToast";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@utils/constants/messages";
 
 export const useStudyRoomQuery = (studyroomId) => {
   const { isLoading, data } = useQuery({
@@ -101,15 +103,16 @@ export const useJoinStudyRoom = () => {
 
 export const useUpdateStudyRoom = () => {
   const queryClient = useQueryClient();
-  const setError = useSetRecoilState(errorState);
+  const { displayToast } = useToast();
 
   return useMutation({
     mutationFn: ({ roomId, newRoomInfo }) => updateStudyRoom(roomId, newRoomInfo),
     onSuccess: (newRoomInfo, { roomId }) => {
       queryClient.setQueryData(["studyroomInfo", roomId], newRoomInfo);
+      displayToast({ message: SUCCESS_MESSAGES.STUDYROOM_EDIT });
     },
-    onError: (error) => {
-      setError(error);
+    onError: () => {
+      displayToast({ message: ERROR_MESSAGES.COMMON });
     },
   });
 };
