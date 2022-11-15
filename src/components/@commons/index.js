@@ -12,6 +12,7 @@ export { default as RadioButton } from "./RadioButton/RadioButton";
 export { default as Textarea } from "./Textarea/Textarea";
 export { default as Thumbnail } from "./Thumbnail/Thumbnail";
 export { default as TimeTable } from "./TimeTable/TimeTable";
+export { default as Toast } from "./Toast/Toast";
 export { default as ToggleButton } from "./ToggleButton/ToggleButton";
 export { default as ToolTip } from "./ToolTip/ToolTip";
 export { default as UserCount } from "./UserCount/UserCount";

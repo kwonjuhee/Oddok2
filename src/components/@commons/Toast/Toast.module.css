@@ -1,0 +1,47 @@
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: var(--gray900);
+  border-radius: 2px;
+  box-shadow: 0 0 10px black;
+  z-index: var(--z-index-overlay);
+
+  animation: fadein 0.6s;
+}
+
+.toast.fadeout {
+  animation: fadeout 0.6s;
+}
+
+.toast > button {
+  font-size: 1.25rem;
+}
+
+@keyframes fadein {
+  from {
+    transform: translate(-50%, 32px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, 32px);
+    opacity: 0;
+  }
+}
