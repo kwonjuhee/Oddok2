@@ -1,15 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { errorState } from "@recoil/error-state";
 import { Modal } from "@components/@commons";
+import { useHandleError } from "@hooks/useHandleError";
 
 function ErrorModal() {
   const navigate = useNavigate();
-  const [error, setError] = useRecoilState(errorState);
+  const { error, setError, clearError } = useHandleError();
 
   const handleClose = () => {
-    setError(null);
+    clearError();
   };
 
   const redirect = (path) => {
@@ -17,19 +16,19 @@ function ErrorModal() {
     navigate(path);
   };
 
+  if (!error) return null;
+
   return (
-    error && (
-      <Modal
-        title="⚠️"
-        onClose={handleClose}
-        onAction={{
-          text: error.action?.text ?? "메인으로 이동하기",
-          action: () => redirect(error.action?.path ?? "/"),
-        }}
-      >
-        {error.message}
-      </Modal>
-    )
+    <Modal
+      title="⚠️"
+      onClose={handleClose}
+      onAction={{
+        text: error.action?.text ?? "메인으로 이동하기",
+        action: () => redirect(error.action?.path ?? "/"),
+      }}
+    >
+      {error.message}
+    </Modal>
   );
 }
 

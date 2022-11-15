@@ -8,10 +8,9 @@ import {
   leaveStudyRoom,
   checkPassword,
 } from "@api/study-room-api";
-import { useSetRecoilState } from "recoil";
-import { errorState } from "@recoil/error-state";
-import { loadingState } from "@recoil/loading-state";
 import { useToast } from "@hooks/useToast";
+import { useLoading } from "@hooks/useLoading";
+import { useHandleError } from "@hooks/useHandleError";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@utils/constants/messages";
 
 export const useStudyRoomQuery = (studyroomId) => {
@@ -62,8 +61,8 @@ export const useStudyRoomList = (searchParams, tagFilter) => {
 };
 
 export const useCreateStudyRoom = () => {
-  const setIsLoading = useSetRecoilState(loadingState);
-  const setError = useSetRecoilState(errorState);
+  const { showLoading, hideLoading } = useLoading();
+  const { setError } = useHandleError();
 
   return useMutation({
     mutationFn: async (roomInfo) => {
@@ -72,10 +71,10 @@ export const useCreateStudyRoom = () => {
       return { id, token };
     },
     onMutate: () => {
-      setIsLoading(true);
+      showLoading();
     },
     onSettled: () => {
-      setIsLoading(false);
+      hideLoading();
     },
     onError: (error) => {
       setError(error);
@@ -84,16 +83,16 @@ export const useCreateStudyRoom = () => {
 };
 
 export const useJoinStudyRoom = () => {
-  const setIsLoading = useSetRecoilState(loadingState);
-  const setError = useSetRecoilState(errorState);
+  const { showLoading, hideLoading } = useLoading();
+  const { setError } = useHandleError();
 
   return useMutation({
     mutationFn: (roomId) => joinStudyRoom(roomId),
     onMutate: () => {
-      setIsLoading(true);
+      showLoading();
     },
     onSettled: () => {
-      setIsLoading(false);
+      hideLoading();
     },
     onError: (error) => {
       setError(error);
@@ -118,7 +117,7 @@ export const useUpdateStudyRoom = () => {
 };
 
 export const useLeaveStudyRoom = () => {
-  const setError = useSetRecoilState(errorState);
+  const { setError } = useHandleError();
 
   return useMutation({
     mutationFn: (roomId) => leaveStudyRoom(roomId),
