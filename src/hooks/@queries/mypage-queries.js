@@ -106,8 +106,8 @@ export const useUpdateMyRoom = () => {
 
   return useMutation({
     mutationFn: ({ roomId, newRoomInfo }) => updateStudyRoom(roomId, newRoomInfo),
-    onSuccess: (newRoomInfo) => {
-      queryClient.setQueryData(["myRoom"], newRoomInfo);
+    onSuccess: () => {
+      queryClient.invalidateQueries(["myRoom"]);
       displayToast({ message: SUCCESS_MESSAGES.STUDYROOM_EDIT });
     },
     onError: () => {
