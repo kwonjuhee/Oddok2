@@ -30,7 +30,11 @@ function MyGoalEditModal({ onClose }) {
   };
 
   const editMyGoal = () => {
-    mutate(inputData);
+    mutate(inputData, {
+      onSuccess: () => {
+        onClose();
+      },
+    });
   };
 
   return (
@@ -39,10 +43,7 @@ function MyGoalEditModal({ onClose }) {
       onClose={onClose}
       onAction={{
         text: "확인",
-        action: () => {
-          editMyGoal();
-          onClose();
-        },
+        action: editMyGoal,
       }}
       disabled={!isValid}
     >

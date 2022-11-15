@@ -17,13 +17,23 @@ function MyRoomEditModal({ onClose }) {
   };
 
   const updateMyRoomHandler = () => {
-    updateMyRoomMutation.mutate({ roomId: myRoomData.id, newRoomInfo: inputData });
+    updateMyRoomMutation.mutate(
+      { roomId: myRoomData.id, newRoomInfo: inputData },
+      {
+        onSuccess: () => {
+          onClose();
+        },
+      },
+    );
   };
 
   const deleteMyRoomHandler = () => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
-      deleteMyRoomMutation.mutate(myRoomData.id);
-      onClose();
+      deleteMyRoomMutation.mutate(myRoomData.id, {
+        onSuccess: () => {
+          onClose();
+        },
+      });
     }
   };
 
@@ -41,10 +51,7 @@ function MyRoomEditModal({ onClose }) {
           onClose={onClose}
           onAction={{
             text: "확인",
-            action: () => {
-              updateMyRoomHandler();
-              onClose();
-            },
+            action: updateMyRoomHandler,
           }}
         >
           <div className={styles.box}>
