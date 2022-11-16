@@ -28,26 +28,44 @@ export const useBookmarkQuery = () => {
 };
 
 export const useAddBookmark = () => {
-  const queryclient = useQueryClient();
+  const queryClient = useQueryClient();
+  const { displayToast } = useToast();
 
   return useMutation({
     mutationFn: saveBookmark,
+    onMutate: async (newBookmark) => {
+      const prevBookmark = queryClient.getQueryData(["bookmark"]);
+      queryClient.setQueryData(["bookmark"], newBookmark);
+
+      return { prevBookmark };
+    },
     onSuccess: () => {
-      queryclient.invalidateQueries(["bookmark"]);
+      queryClient.invalidateQueries(["bookmark"]);
+    },
+    onError: (error, _, context) => {
+      queryClient.setQueryData(["bookmark"], context.prevBookmark);
+      displayToast({ message: ERROR_MESSAGES.COMMON });
     },
   });
 };
 
 export const useDeleteBookmark = () => {
-  const queryclient = useQueryClient();
+  const queryClient = useQueryClient();
   const { displayToast } = useToast();
 
   return useMutation({
     mutationFn: removeBookmark,
-    onSuccess: () => {
-      queryclient.setQueryData(["bookmark"], null);
+    onMutate: async () => {
+      const prevBookmark = queryClient.getQueryData(["bookmark"]);
+      queryClient.setQueryData(["bookmark"], null);
+
+      return { prevBookmark };
     },
-    onError: () => {
+    onSuccess: () => {
+      queryClient.setQueryData(["bookmark"], null);
+    },
+    onError: (error, _, context) => {
+      queryClient.setQueryData(["bookmark"], context.prevBookmark);
       displayToast({ message: ERROR_MESSAGES.COMMON });
     },
   });
