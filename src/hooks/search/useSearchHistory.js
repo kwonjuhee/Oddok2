@@ -1,37 +1,26 @@
-import { useState, useEffect } from "react";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { keywordsState } from "@recoil/keywords-state";
 
 const useSearchHistory = () => {
-  const [history, setHistory] = useState([]);
+  const [keywords, setKeywords] = useRecoilState(keywordsState);
+  const resetKeywords = useResetRecoilState(keywordsState);
 
-  const getHistory = () => (localStorage.getItem("keywords") ? JSON.parse(localStorage.getItem("keywords")) : []);
-
-  const addHistory = (text) => {
-    const newItem = { key: new Date(), text };
-    const prevHistory = getHistory();
-    const updatedHistory = [
-      ...prevHistory.filter((e, i) => i > prevHistory.length - 10 && e.text !== newItem.text),
-      newItem,
-    ];
-    localStorage.setItem("keywords", JSON.stringify(updatedHistory));
-    setHistory(updatedHistory);
+  const addKeyword = (text) => {
+    setKeywords((prev) => {
+      const newKeyword = { key: new Date(), text };
+      return [...prev.filter((item) => item.text !== text), newKeyword].slice(-10);
+    });
   };
 
-  const removeHistory = (key) => {
-    const updatedHistory = getHistory().filter((item) => item.key !== key);
-    localStorage.setItem("keywords", JSON.stringify(updatedHistory));
-    setHistory(updatedHistory);
+  const removeKeyword = (key) => {
+    setKeywords((prev) => prev.filter((item) => item.key !== key));
   };
 
-  const removeHistoryAll = () => {
-    localStorage.removeItem("keywords");
-    setHistory([]);
+  const removeKeywordAll = () => {
+    resetKeywords();
   };
 
-  useEffect(() => {
-    setHistory(getHistory());
-  }, []);
-
-  return { history, getHistory, addHistory, removeHistory, removeHistoryAll };
+  return { keywords, addKeyword, removeKeyword, removeKeywordAll };
 };
 
 export default useSearchHistory;

@@ -9,15 +9,16 @@ import styles from "./Search.module.css";
 function Search() {
   const keywordRef = useRef();
   const navigate = useNavigate();
-  const { addHistory } = useSearchHistory();
+  const { addKeyword } = useSearchHistory();
 
   const handleSearchKeyword = (e) => {
     e.preventDefault();
     if (keywordRef.current.value === "") return;
 
+    addKeyword(keywordRef.current.value);
     navigate({ pathname: "/search/studyroom", search: `?name=${keywordRef.current.value}` });
-    addHistory(keywordRef.current.value);
     keywordRef.current.blur();
+    keywordRef.current.value = "";
   };
 
   return (
