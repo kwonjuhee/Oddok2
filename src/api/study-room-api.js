@@ -1,21 +1,16 @@
-import axios from "axios";
 import axiosInstance from "@api/axios-config";
 
-export const createStudyRoom = async (roomInfo) => {
-  const response = await axiosInstance({
+export const createStudyRoom = (roomInfo) =>
+  axiosInstance({
     url: "/study-room",
     method: "POST",
     data: roomInfo,
   });
-  return response;
-};
 
-export const joinStudyRoom = async (roomId) => {
-  const response = await axiosInstance({
+export const joinStudyRoom = (roomId) =>
+  axiosInstance({
     url: `/study-room/join/${roomId}`,
   });
-  return response;
-};
 
 export const startStudyRoom = async (roomInfo) => {
   const { id } = await createStudyRoom(roomInfo);
@@ -23,31 +18,25 @@ export const startStudyRoom = async (roomInfo) => {
   return { id, token };
 };
 
-export const updateStudyRoom = async (roomId, newRoomInfo) => {
-  const response = await axiosInstance({
+export const updateStudyRoom = (roomId, newRoomInfo) =>
+  axiosInstance({
     url: `/study-room/${roomId}`,
     method: "PUT",
     data: newRoomInfo,
   });
-  return response;
-};
 
-export const leaveStudyRoom = async (roomId) => {
-  const response = await axiosInstance({
+export const leaveStudyRoom = (roomId) =>
+  axiosInstance({
     url: `/study-room/leave/${roomId}`,
   });
-  return response;
-};
 
-export const getStudyRoom = async (roomId) => {
-  const response = await axiosInstance({
+export const getStudyRoom = (roomId) =>
+  axiosInstance({
     url: `/study-room/${roomId}`,
   });
-  return response;
-};
 
-export const getStudyRoomList = async (searchParams, page) => {
-  const response = await axios.get("/study-room", {
+export const getStudyRoomList = (searchParams, page) =>
+  axiosInstance.get("/study-room", {
     params: {
       sort: searchParams.get("sort"),
       isPublic: searchParams.get("isPublic"),
@@ -57,12 +46,10 @@ export const getStudyRoomList = async (searchParams, page) => {
       page,
     },
   });
-  return response.data;
-};
 
-export const checkPassword = async (roomId, password) => {
-  const response = await axiosInstance.post(`/study-room/check/${roomId}`, {
-    password,
+export const checkPassword = (roomId, password) =>
+  axiosInstance({
+    url: `/study-room/check/${roomId}`,
+    method: "POST",
+    data: { password },
   });
-  return response;
-};

@@ -1,7 +1,7 @@
-import axios from "axios";
+import axiosInstance from "./axios-config";
 
-export const getPopluarHashtag = async (name) => {
-  const query = name ? `?name=${name}` : "";
-  const response = await axios.get(`/hashtag/popular${query}`);
-  return response;
-};
+export const getPopluarHashtag = (studyroomName) =>
+  axiosInstance({
+    url: "/hashtag/popular",
+    params: { studyroomName } /** 값이 null인 경우 params에서 제외된다. */,
+  });

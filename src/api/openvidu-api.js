@@ -1,17 +1,15 @@
 import { OpenVidu } from "openvidu-browser";
 import OpenviduError from "@api/error/OpenviduError";
-import { leaveStudyRoom } from "@api/study-room-api";
 import { ERROR_MESSAGES } from "@utils/constants/messages";
 
 const OV = new OpenVidu();
 
 export const initSession = () => OV.initSession();
 
-export const connectToSession = async (session, token, userData, roomId) => {
+export const connectToSession = (session, token, userData) => {
   try {
     session.connect(token, userData);
   } catch (error) {
-    await leaveStudyRoom(roomId);
     throw new OpenviduError(error, ERROR_MESSAGES.OPENVIDU_SESSION_CONNECT);
   }
 };
@@ -25,7 +23,7 @@ export const connectDevice = async () => {
   }
 };
 
-export const initPublisher = async (deviceId, deviceStatus) => {
+export const initPublisher = (deviceId, deviceStatus) => {
   try {
     return OV.initPublisherAsync(undefined, {
       audioSource: undefined,

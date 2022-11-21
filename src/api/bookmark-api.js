@@ -1,16 +1,7 @@
 import axiosInstance from "./axios-config";
 
-export const getBookmark = async () => {
-  const response = await axiosInstance.get("/bookmark");
-  return response;
-};
+export const getBookmark = () => axiosInstance({ url: "/bookmark" });
 
-export const saveBookmark = async (roomId) => {
-  const response = await axiosInstance.post(`/bookmark/${roomId}`);
-  return response;
-};
+export const saveBookmark = (roomId) => axiosInstance({ url: `/bookmark/${roomId}`, method: "POST" });
 
-export const removeBookmark = async () => {
-  const response = await axiosInstance.delete("/bookmark");
-  return response;
-};
+export const removeBookmark = () => axiosInstance({ url: "/bookmark", method: "DELETE" });

@@ -1,6 +1,8 @@
 import axiosInstance from "./axios-config";
 
-export const saveTime = async (timeInfo) => {
-  const response = await axiosInstance.post("/time-record", timeInfo);
-  return response;
-};
+export const saveTime = async (timeInfo) =>
+  axiosInstance({
+    url: "/time-record",
+    method: "POST",
+    data: { timeInfo },
+  });
