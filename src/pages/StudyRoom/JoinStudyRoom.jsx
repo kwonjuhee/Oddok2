@@ -1,11 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { SettingBar, UserVideo, SettingSideBar, PlanSidebar } from "@components/studyroom";
 import { useMyStream, useToggleSideBar } from "@hooks";
-import { useFetchUserInfo } from "@hooks/@queries/user-queries";
-import { useJoinStudyRoom, useStudyRoomQuery } from "@hooks/@queries/studyroom-queries";
+import { useFetchUserInfo } from "@hooks/@queries/user";
+import { useJoinStudyRoom, useStudyRoomQuery } from "@hooks/@queries/studyroom";
 import styles from "./styles.module.css";
 
-function JoinRoom() {
+function JoinStudyRoom() {
   const navigate = useNavigate();
   const { roomId } = useParams();
   const { sideBarType, toggleSideBar } = useToggleSideBar();
@@ -50,4 +50,4 @@ function JoinRoom() {
   );
 }
 
-export default JoinRoom;
+export default JoinStudyRoom;

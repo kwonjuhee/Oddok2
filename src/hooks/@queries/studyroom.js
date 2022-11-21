@@ -7,7 +7,7 @@ import {
   updateStudyRoom,
   leaveStudyRoom,
   checkPassword,
-} from "@api/study-room-api";
+} from "@api/study-room";
 import { useToast } from "@hooks/useToast";
 import { useLoading } from "@hooks/useLoading";
 import { useHandleError } from "@hooks/useHandleError";

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal } from "@components/@commons";
 import { SettingForm } from "@components/studyroom";
 import { MyRoom, EditButton } from "@components/mypage";
-import { useMyRoomQuery, useUpdateMyRoom, useDeleteMyRoom } from "@hooks/@queries/mypage-queries";
+import { useMyRoomQuery, useUpdateMyRoom, useDeleteMyRoom } from "@hooks/@queries/mypage";
 import styles from "./MyRoomEditModal.module.css";
 
 function MyRoomEditModal({ onClose }) {

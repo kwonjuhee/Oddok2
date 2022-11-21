@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { loadingState } from "@recoil/loading-state";
+import { loadingState } from "@recoil/loading";
 
 export const useLoading = () => {
   const [isLoading, setIsLoading] = useRecoilState(loadingState);

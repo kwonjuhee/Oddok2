@@ -1,13 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  getProfile,
-  createProfile,
-  updateProfile,
-  getTimeRecordList,
-  getMyRoom,
-  deleteStudyRoom,
-} from "@api/mypage-api";
-import { updateStudyRoom } from "@api/study-room-api";
+import { getProfile, createProfile, updateProfile, getTimeRecordList, getMyRoom, deleteStudyRoom } from "@api/mypage";
+import { updateStudyRoom } from "@api/study-room";
 import { useToast } from "@hooks/useToast";
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from "@utils/constants/messages";
 import { COLORS } from "@utils/constants/time_record_colors";

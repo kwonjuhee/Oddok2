@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Hashtag, Play, Pause } from "@icons";
-import { useStudyRoomQuery, useUpdateStudyRoom } from "@hooks/@queries/studyroom-queries";
+import { useStudyRoomQuery, useUpdateStudyRoom } from "@hooks/@queries/studyroom";
 import { SettingForm } from "..";
 import styles from "./SettingSideBar.module.css";
 

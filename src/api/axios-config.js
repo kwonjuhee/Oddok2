@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getNewToken } from "./auth/auth-api";
+import { getNewToken } from "./auth/auth";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 

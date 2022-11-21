@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import { deviceState } from "@recoil/studyroom-state";
-import { userState } from "@recoil/user-state";
+import { deviceState } from "@recoil/studyroom";
+import { userState } from "@recoil/user";
 
 const useManageLocalUser = () => {
   const { nickname, updateAllowed } = useRecoilValue(userState);

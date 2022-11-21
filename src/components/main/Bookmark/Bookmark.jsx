@@ -1,5 +1,5 @@
 import { Thumbnail } from "@components/@commons";
-import { useBookmarkQuery } from "@hooks/@queries/bookmark-queries";
+import { useBookmarkQuery } from "@hooks/@queries/bookmark";
 import styles from "./Bookmark.module.css";
 
 function Bookmark() {

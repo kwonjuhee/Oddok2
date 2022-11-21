@@ -1,5 +1,5 @@
 import React from "react";
-import { PageLayout } from "@components/@layouts";
+import { PageLayout } from "@layouts";
 import { KAKAO_AUTH_URL } from "@api/auth/kakao";
 import styles from "./Login.module.css";
 

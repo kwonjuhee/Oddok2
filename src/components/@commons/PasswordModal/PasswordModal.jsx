@@ -1,10 +1,8 @@
 import React, { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { passwordAuthenticatedState } from "@recoil/studyroom-state";
 import { Modal, Input } from "@components/@commons";
 import { useInput } from "@hooks";
-import { useCheckStudyRoomPassword } from "@hooks/@queries/studyroom-queries";
+import { useCheckStudyRoomPassword } from "@hooks/@queries/studyroom";
 import styles from "./PasswordModal.module.css";
 
 function PasswordModal() {

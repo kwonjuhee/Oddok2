@@ -6,7 +6,8 @@ function HashtagListSkeleton() {
   return (
     <>
       {new Array(15).fill(0).map((_, i) => (
-        <div className={styles.skeleton} style={{ width: widths[i] }} />
+        // eslint-disable-next-line react/no-array-index-key
+        <div key={i} className={styles.skeleton} style={{ width: widths[i] }} />
       ))}
     </>
   );

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useRecoilState, useSetRecoilState, useResetRecoilState } from "recoil";
-import { roomInfoState, deviceState } from "@recoil/studyroom-state";
-import { errorState } from "@recoil/error-state";
-import { planState, selectedPlanState } from "@recoil/plan-state";
+import { roomInfoState, deviceState } from "@recoil/studyroom";
+import { errorState } from "@recoil/error";
+import { planState, selectedPlanState } from "@recoil/plan";
 import {
   hourState,
   minuteState,
@@ -12,8 +12,8 @@ import {
   totalMinuteState,
   totalSecondState,
   studyTimeState,
-} from "@recoil/timer-state";
-import { initSession, connectToSession, connectDevice, initPublisher } from "@api/openvidu-api";
+} from "@recoil/timer";
+import { initSession, connectToSession, connectDevice, initPublisher } from "@api/openvidu";
 import {
   StudyBar,
   UserVideo,
@@ -25,7 +25,7 @@ import {
 import { Modal } from "@components/@commons";
 import { useToggleSideBar, useManageLocalUser, useManageRemoteUsers } from "@hooks";
 import useModal from "@hooks/useModal";
-import { useLeaveStudyRoom } from "@hooks/@queries/studyroom-queries";
+import { useLeaveStudyRoom } from "@hooks/@queries/studyroom";
 import styles from "./StudyRoom.module.css";
 
 function StudyRoom() {
@@ -87,7 +87,7 @@ function StudyRoom() {
 
   const startOpenvidu = async () => {
     const [_, deviceId] = await Promise.all([
-      connectToSession(session, location.state.token, localUser, roomId),
+      connectToSession(session, location.state.token, localUser),
       connectDevice(deviceStatus),
     ]);
     const stream = await initPublisher(deviceId, deviceStatus);

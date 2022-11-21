@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Search, Profile } from "@icons";
 import { useGoToPage } from "@hooks";
-import { useFetchUserInfo } from "@hooks/@queries/user-queries";
+import { useFetchUserInfo } from "@hooks/@queries/user";
 import ProfileSideBar from "./ProfileSideBar";
 import styles from "./MobileHeader.module.css";
 

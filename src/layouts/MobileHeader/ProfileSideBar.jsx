@@ -1,7 +1,7 @@
 import React from "react";
 import { Cancel, Profile, Door } from "@icons";
 import { useGoToPage, useModal } from "@hooks";
-import { useFetchUserInfo, useOAuthLogout } from "@hooks/@queries/user-queries";
+import { useFetchUserInfo, useOAuthLogout } from "@hooks/@queries/user";
 import { NicknameEditModal } from "@components/@commons";
 import styles from "./ProfileSideBar.module.css";
 

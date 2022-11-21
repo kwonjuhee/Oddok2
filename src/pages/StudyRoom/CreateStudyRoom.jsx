@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { roomInfoState } from "@recoil/studyroom-state";
+import { roomInfoState } from "@recoil/studyroom";
 import { SettingBar, UserVideo, SettingForm, PlanSidebar } from "@components/studyroom";
 import { useToggleSideBar, useMyStream } from "@hooks";
-import { useCreateStudyRoom } from "@hooks/@queries/studyroom-queries";
-import { useFetchUserInfo } from "@hooks/@queries/user-queries";
+import { useCreateStudyRoom } from "@hooks/@queries/studyroom";
+import { useFetchUserInfo } from "@hooks/@queries/user";
 import styles from "./styles.module.css";
 
-function CreateRoom() {
+function CreateStudyRoom() {
   const navigate = useNavigate();
   const roomInfo = useRecoilValue(roomInfoState);
   const { sideBarType, toggleSideBar } = useToggleSideBar();
@@ -51,4 +51,4 @@ function CreateRoom() {
   );
 }
 
-export default CreateRoom;
+export default CreateStudyRoom;

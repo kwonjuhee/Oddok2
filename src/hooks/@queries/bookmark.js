@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";
-import { userState } from "@recoil/user-state";
-import { getBookmark, saveBookmark, removeBookmark } from "@api/bookmark-api";
+import { userState } from "@recoil/user";
+import { getBookmark, saveBookmark, removeBookmark } from "@api/bookmark";
 import { useToast } from "@hooks/useToast";
 import { ERROR_MESSAGES } from "@utils/constants/messages";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { userState } from "@recoil/user-state";
+import { userState } from "@recoil/user";
 
 function PrivateRoute() {
   const user = useRecoilValue(userState);

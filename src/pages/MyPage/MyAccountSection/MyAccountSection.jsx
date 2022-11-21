@@ -1,6 +1,6 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { userState } from "@recoil/user-state";
+import { userState } from "@recoil/user";
 import { EditButton, AccountDeleteModal } from "@components/mypage";
 import { NicknameEditModal } from "@components/@commons";
 import { useModal } from "@hooks";

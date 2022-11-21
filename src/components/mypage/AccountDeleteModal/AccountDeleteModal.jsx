@@ -1,10 +1,10 @@
 import React from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { Modal, Loading } from "@components/@commons";
-import { deleteAccount } from "@api/auth/auth-api";
+import { deleteAccount } from "@api/auth/auth";
 import useAsync from "@hooks/useAsync";
-import { userState } from "@recoil/user-state";
-import { errorState } from "@recoil/error-state";
+import { userState } from "@recoil/user";
+import { errorState } from "@recoil/error";
 
 function AccountDeleteModal({ onClose }) {
   const [user, setUserState] = useRecoilState(userState);

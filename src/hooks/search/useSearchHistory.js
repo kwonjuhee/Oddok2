@@ -1,5 +1,5 @@
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { keywordsState } from "@recoil/keywords-state";
+import { keywordsState } from "@recoil/keywords";
 
 const useSearchHistory = () => {
   const [keywords, setKeywords] = useRecoilState(keywordsState);

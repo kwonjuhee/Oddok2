@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { Search, Profile } from "@icons";
 import { NicknameEditModal } from "@components/@commons";
 import { useModal, useGoToPage, useOutSideClick } from "@hooks";
-import { useFetchUserInfo } from "@hooks/@queries/user-queries";
+import { useFetchUserInfo } from "@hooks/@queries/user";
 import ProfileMenu from "./ProfileMenu";
 import styles from "./Header.module.css";
 

@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { PageLayout } from "@components/@layouts";
+import { PageLayout } from "@layouts";
 import { SearchBrowse, SearchResult } from "@components/search";
 import { Input } from "@components/@commons";
 import { useSearchHistory } from "@hooks";

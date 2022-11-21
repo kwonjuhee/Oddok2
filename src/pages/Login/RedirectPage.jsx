@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Loading } from "@components/@commons";
-import { useOAuthLogin } from "@hooks/@queries/user-queries";
+import { useOAuthLogin } from "@hooks/@queries/user";
 
 function RedirectPage() {
   const authCode = new URL(window.location.href).searchParams.get("code"); // 파라미터로 넘어온 인가코드를 가져옴

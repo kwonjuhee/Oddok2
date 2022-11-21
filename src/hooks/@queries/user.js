@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
-import { userState } from "@recoil/user-state";
-import { errorState } from "@recoil/error-state";
-import { getUserInfo } from "@api/user-api";
-import { login, logout } from "@api/auth/auth-api";
+import { userState } from "@recoil/user";
+import { errorState } from "@recoil/error";
+import { getUserInfo } from "@api/user";
+import { login, logout } from "@api/auth/auth";
 
 export const useFetchUserInfo = () => {
   const { isLogin } = useRecoilValue(userState);

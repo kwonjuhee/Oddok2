@@ -2,7 +2,7 @@ import React from "react";
 import { useModal } from "@hooks";
 import { Textarea } from "@components/@commons";
 import { MyGoalEditModal, EditButton } from "@components/mypage";
-import { useMyGoalQuery } from "@hooks/@queries/mypage-queries";
+import { useMyGoalQuery } from "@hooks/@queries/mypage";
 import { getDday, dateParsing } from "@utils";
 import styles from "./MyGoalSection.module.css";
 

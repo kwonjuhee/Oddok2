@@ -2,7 +2,7 @@
 import { useSearchParams, Link, useLocation } from "react-router-dom";
 import { StudyRoomCard, StudyRoomCardSkeleton } from "@components/main";
 import { ArrowDown } from "@icons";
-import { useStudyRoomList } from "@hooks/@queries/studyroom-queries";
+import { useStudyRoomList } from "@hooks/@queries/studyroom";
 import StudyRoomCardListHead from "./StudyRoomCardListHead";
 import styles from "./StudyRoomCardList.module.css";
 

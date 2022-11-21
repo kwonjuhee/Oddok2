@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { planState, selectedPlanState } from "@recoil/plan-state";
-import { hourState, minuteState, secondState } from "@recoil/timer-state";
+import { planState, selectedPlanState } from "@recoil/plan";
+import { hourState, minuteState, secondState } from "@recoil/timer";
 import { Input } from "@components/@commons";
 import { useInput } from "@hooks";
 import { SendButton } from "@icons";

@@ -5,17 +5,17 @@ import { PasswordModal } from "@components/@commons";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 
-const Main = lazy(() => import("@pages/Main/Main"));
-const Login = lazy(() => import("@pages/Login/Login"));
-const RedirectPage = lazy(() => import("@pages/Login/RedirectPage"));
-const LogoutRedirectPage = lazy(() => import("@pages/LogoutRedirectPage/LogoutRedirectPage"));
-const Search = lazy(() => import("@pages/Search/Search"));
-const MyPage = lazy(() => import("@pages/MyPage/MyPage"));
-const CreateRoom = lazy(() => import("@pages/CreateRoom"));
-const JoinRoom = lazy(() => import("@pages/JoinRoom"));
-const StudyRoom = lazy(() => import("@pages/StudyRoom/StudyRoom"));
-const ShareStudyTime = lazy(() => import("@pages/ShareStudyTime/ShareStudyTime"));
-const NotFoundPage = lazy(() => import("@pages/NotFoundPage/NotFoundPage"));
+const Main = lazy(() => import("@pages/main/Main"));
+const Login = lazy(() => import("@pages/login/Login"));
+const RedirectPage = lazy(() => import("@pages/login/RedirectPage"));
+const LogoutRedirectPage = lazy(() => import("@pages/logout/LogoutRedirectPage"));
+const Search = lazy(() => import("@pages/search/Search"));
+const MyPage = lazy(() => import("@pages/mypage/MyPage"));
+const CreateStudyRoom = lazy(() => import("@pages/studyroom/CreateStudyRoom"));
+const JoinStudyRoom = lazy(() => import("@pages/studyroom/JoinStudyRoom"));
+const StudyRoom = lazy(() => import("@pages/studyroom/StudyRoom"));
+const ShareTimetable = lazy(() => import("@pages/share-timetable/ShareTimetable"));
+const NotFoundPage = lazy(() => import("@pages/not-found/NotFoundPage"));
 
 function Router() {
   const location = useLocation();
@@ -31,10 +31,10 @@ function Router() {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/logout/oauth2/code/kakao" element={<LogoutRedirectPage />} />
-          <Route path="/studyroom/create" element={<CreateRoom />} />
-          <Route path="/studyroom/:roomId/setting" element={<JoinRoom />} />
+          <Route path="/studyroom/create" element={<CreateStudyRoom />} />
+          <Route path="/studyroom/:roomId/setting" element={<JoinStudyRoom />} />
           <Route path="/studyroom/:roomId" element={<StudyRoom />} />
-          <Route path="/share/study-time" element={<ShareStudyTime />} />
+          <Route path="/share/timetable" element={<ShareTimetable />} />
           <Route path="/mypage" element={<MyPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { bookmarkState } from "@recoil/bookmark-state";
+import { bookmarkState } from "@recoil/bookmark";
 import { useGoToPage, useModal } from "@hooks";
 import { UserCount, PasswordModal } from "@components/@commons";
-import { getTotalParticipant } from "@api/participant-api";
+import { getTotalParticipant } from "@api/participant";
 import styles from "./TotalParticipant.module.css";
 
 function TotalParticipant() {
@@ -17,7 +17,7 @@ function TotalParticipant() {
 
   useEffect(() => {
     getTotalParticipant()
-      .then((response) => setTotalParticipant(response.data))
+      .then((data) => setTotalParticipant(data))
       .catch((error) => console.error(error));
   }, []);
 

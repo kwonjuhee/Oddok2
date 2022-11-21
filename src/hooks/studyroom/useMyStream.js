@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import { useSetRecoilState } from "recoil";
-import { deviceState } from "@recoil/studyroom-state";
+import { deviceState } from "@recoil/studyroom";
 
 const useMyStream = () => {
   const videoRef = useRef();

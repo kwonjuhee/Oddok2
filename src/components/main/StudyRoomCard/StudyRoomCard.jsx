@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { userState } from "@recoil/user-state";
+import { userState } from "@recoil/user";
 import { Thumbnail, UserCount } from "@components/@commons";
 import { Lock, Unlock, BookMark, BookMarkHeart } from "@icons";
 import { useGoToPage } from "@hooks";
-import { useBookmarkQuery, useAddBookmark, useDeleteBookmark } from "@hooks/@queries/bookmark-queries";
+import { useBookmarkQuery, useAddBookmark, useDeleteBookmark } from "@hooks/@queries/bookmark";
 import styles from "./StudyRoomCard.module.css";
 
 function StudyRoomCard({ roomData }) {

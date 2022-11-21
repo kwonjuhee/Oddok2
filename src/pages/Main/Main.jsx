@@ -1,9 +1,9 @@
 import React from "react";
-import { PageLayout } from "@components/@layouts";
+import { PageLayout } from "@layouts";
 import { Bookmark, StudyRoomCardList, TotalParticipant } from "@components/main";
-import styles from "./Main.module.css";
+import styles from "./MainPage.module.css";
 
-function Main() {
+function MainPage() {
   return (
     <PageLayout>
       <main className={styles.main}>
@@ -18,4 +18,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default MainPage;

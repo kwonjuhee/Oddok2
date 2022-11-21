@@ -1,9 +1,9 @@
 import React from "react";
 import { CloseButton, ShareButton } from "@components/share";
-import { StudyHistorySection } from "@components/mypage";
-import styles from "./ShareStudyTime.module.css";
+import StudyHistorySection from "../mypage/StudyHistorySection/StudyHistorySection";
+import styles from "./ShareTimetable.module.css";
 
-function ShareStudyTime() {
+function ShareTimetable() {
   return (
     <div className={styles.share_page}>
       <CloseButton />
@@ -13,4 +13,4 @@ function ShareStudyTime() {
   );
 }
 
-export default ShareStudyTime;
+export default ShareTimetable;

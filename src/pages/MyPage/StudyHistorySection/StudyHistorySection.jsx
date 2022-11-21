@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { TimeTable } from "@components/@commons";
 import { DatePicker, TimeRecordList } from "@components/mypage";
-import { useTimeRecordQuery } from "@hooks/@queries/mypage-queries";
+import { useTimeRecordQuery } from "@hooks/@queries/mypage";
 import { dateFormatting } from "@utils";
 import styles from "./StudyHistorySection.module.css";
 

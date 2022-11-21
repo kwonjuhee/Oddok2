@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Loading } from "@components/@commons";
-import { useOAuthLogout } from "@hooks/@queries/user-queries";
+import { useOAuthLogout } from "@hooks/@queries/user";
 
 function LogoutRedirectPage() {
   const { mutate } = useOAuthLogout();

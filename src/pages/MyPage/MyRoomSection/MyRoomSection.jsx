@@ -1,7 +1,7 @@
 import React from "react";
 import { useModal } from "@hooks";
 import { MyRoom, EditButton, MyRoomEditModal } from "@components/mypage";
-import { useMyRoomQuery } from "@hooks/@queries/mypage-queries";
+import { useMyRoomQuery } from "@hooks/@queries/mypage";
 import styles from "./MyRoomSection.module.css";
 
 function MyRoomSection() {

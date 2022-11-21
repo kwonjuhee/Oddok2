@@ -1,6 +1,10 @@
 import React, { useRef, useEffect } from "react";
-import { SideNavBar, MyGoalSection, StudyHistorySection, MyRoomSection, MyAccountSection } from "@components/mypage";
-import { PageLayout } from "@components/@layouts";
+import { PageLayout } from "@layouts";
+import { SideNavBar } from "@components/mypage";
+import MyGoalSection from "./MyGoalSection/MyGoalSection";
+import StudyHistorySection from "./StudyHistorySection/StudyHistorySection";
+import MyRoomSection from "./MyRoomSection/MyRoomSection";
+import MyAccountSection from "./MyAccountSection/MyAccountSection";
 import styles from "./MyPage.module.css";
 
 function MyPage() {

@@ -6,6 +6,7 @@
       "@icons/*": ["./src/assets/icons/*"],
       "@components/*": ["./src/components/*"],
       "@hooks/*": ["./src/hooks/*"],
+      "@layouts/*": ["./src/layouts/*"],
       "@pages/*": ["./src/pages/*"],
       "@recoil/*": ["./src/recoil/*"],
       "@utils/*": ["./src/utils/*"]

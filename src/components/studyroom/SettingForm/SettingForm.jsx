@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { roomInfoState } from "@recoil/studyroom-state";
+import { roomInfoState } from "@recoil/studyroom";
 import { ToggleButton, Dropdown, Input, Textarea, Calendar } from "@components/@commons";
 import { VideoOn, VideoOff, MicOn, MicOff } from "@icons";
 import { TARGET_TIME_OPTIONS, USERLIMIT_OPTIONS } from "@utils/constants/options";

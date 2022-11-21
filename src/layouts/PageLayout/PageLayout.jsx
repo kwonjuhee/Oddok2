@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { Header, Footer, MobileHeader } from "@components/@layouts";
 import PlusFloatingButton from "@components/main/PlusFloatingButton/PlusFloatingButton";
 import { useMediaQuery } from "@hooks";
+import { Header, Footer, MobileHeader } from "..";
 import styles from "./PageLayout.module.css";
 
 function PageLayout({ children }) {
