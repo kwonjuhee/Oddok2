@@ -8,10 +8,6 @@
   background-color: var(--gray950);
 }
 
-.side.hide {
-  display: none;
-}
-
 .input_container {
   margin-right: 16px;
   position: relative;

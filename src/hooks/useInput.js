@@ -1,22 +1,13 @@
-import { useEffect } from "react";
+import { useState } from "react";
 
-function useInput(ref, callback, isDisabled) {
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.focus();
-    }
-  }, [ref]);
+function useInput() {
+  const [value, setValue] = useState("");
 
-  const pressEnter = (event) => {
-    if (isDisabled) {
-      return;
-    }
-    if (event.key === "Enter") {
-      callback();
-    }
+  const onChange = (e) => {
+    setValue(e.target.value);
   };
 
-  return { pressEnter };
+  return [value, onChange];
 }
 
 export default useInput;

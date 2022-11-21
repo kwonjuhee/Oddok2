@@ -1,15 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Modal, Input } from "@components/@commons";
-import { useInput } from "@hooks";
 import { useCheckStudyRoomPassword } from "@hooks/@queries/studyroom";
 import styles from "./PasswordModal.module.css";
 
 function PasswordModal() {
   const navigate = useNavigate();
   const { roomId } = useParams();
-  const inputRef = useRef();
   const [isInvalid, setIsInvalid] = useState(false);
+  const inputRef = useRef();
+
   const { mutate } = useCheckStudyRoomPassword(roomId);
 
   const checkStudyRoomPassword = () => {
@@ -25,7 +25,7 @@ function PasswordModal() {
     });
   };
 
-  const onChange = () => {
+  const onChangePassword = () => {
     if (isInvalid) {
       setIsInvalid(false);
     }
@@ -34,8 +34,6 @@ function PasswordModal() {
   const onClose = () => {
     navigate(-1);
   };
-
-  const { pressEnter } = useInput(inputRef, checkStudyRoomPassword);
 
   return (
     <Modal
@@ -53,8 +51,9 @@ function PasswordModal() {
           isInvalid={isInvalid}
           type="password"
           maxLength="4"
-          onChange={onChange}
-          onKeyPress={pressEnter}
+          onChange={onChangePassword}
+          onEnterKeyPress={checkStudyRoomPassword}
+          autoFocus
         />
       </label>
       {isInvalid && <p className={styles.error}>비밀번호를 잘못 입력했습니다. 다시 입력해주세요.</p>}

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Dots, Circle, CheckedCircle } from "@icons";
 import { Input } from "@components/@commons";
-import { useOutSideClick, useInput } from "@hooks";
+import { useOutSideClick } from "@hooks";
 import styles from "./Plan.module.css";
 
 function Plan({ plan, onPlanClick, onDelete, onEdit }) {
@@ -12,7 +12,6 @@ function Plan({ plan, onPlanClick, onDelete, onEdit }) {
   const dropdownRef = useRef();
 
   useOutSideClick(dropdownRef, () => setIsDropdown(false));
-  const { pressEnter } = useInput(inputRef, () => setIsEditing(false));
 
   const clickDotsBtn = () => {
     setIsDropdown((prev) => !prev);
@@ -59,7 +58,7 @@ function Plan({ plan, onPlanClick, onDelete, onEdit }) {
           {name}
         </span>
       ) : (
-        <Input ref={inputRef} value={name} onChange={onChange} onKeyPress={pressEnter} />
+        <Input ref={inputRef} value={name} onChange={onChange} onEnterKeyPress={() => setIsEditing(false)} autoFocus />
       )}
       <ul ref={dropdownRef}>
         <li>

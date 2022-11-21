@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "@recoil/user";
 import { Input } from "@components/@commons";
-import { useInput } from "@hooks";
 import { SendButton } from "@icons";
 import ChatList from "./ChatList/ChatList";
 import styles from "./ChatSideBar.module.css";
@@ -21,7 +20,7 @@ function ChatSideBar({ session, display }) {
     }
   }, [session]);
 
-  const submitChatHandler = () => {
+  const sendChat = () => {
     if (inputRef.current.value === "") return;
     const content = inputRef.current.value;
     const time = new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
@@ -37,18 +36,18 @@ function ChatSideBar({ session, display }) {
     inputRef.current.value = "";
   };
 
-  const { pressEnter } = useInput(inputRef, submitChatHandler);
-
   return (
-    <aside className={`${styles.side} ${!display && styles.hide}`}>
-      {display && <ChatList chats={chats} user={user} />}
-      <div className={styles.input_container}>
-        <Input placeholder="메시지를 입력하세요" ref={inputRef} onKeyPress={pressEnter} />
-        <button type="submit" className={styles.button} onClick={submitChatHandler}>
-          <SendButton />
-        </button>
-      </div>
-    </aside>
+    display && (
+      <aside className={styles.side}>
+        <ChatList chats={chats} user={user} />
+        <div className={styles.input_container}>
+          <Input placeholder="메시지를 입력하세요" ref={inputRef} onEnterKeyPress={sendChat} autoFocus />
+          <button type="button" className={styles.button} onClick={sendChat}>
+            <SendButton />
+          </button>
+        </div>
+      </aside>
+    )
   );
 }
 

@@ -3,7 +3,6 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 import { planState, selectedPlanState } from "@recoil/plan";
 import { hourState, minuteState, secondState } from "@recoil/timer";
 import { Input } from "@components/@commons";
-import { useInput } from "@hooks";
 import { SendButton } from "@icons";
 import Plans from "../Plans/Plans";
 import styles from "./PlanSidebar.module.css";
@@ -59,8 +58,6 @@ function PlanSidebar() {
     addPlan(plan);
   };
 
-  const { pressEnter } = useInput(inputRef, submitPlan);
-
   return (
     <aside className={styles.plan_bar}>
       <div className={styles.plans}>
@@ -72,7 +69,7 @@ function PlanSidebar() {
         />
       </div>
       <div className={styles.input_container}>
-        <Input ref={inputRef} placeholder="목표를 입력하세요" onKeyPress={pressEnter} />
+        <Input ref={inputRef} placeholder="목표를 입력하세요" onEnterKeyPress={submitPlan} autoFocus />
         <button type="submit" className={styles.button} onClick={submitPlan}>
           <SendButton />
         </button>

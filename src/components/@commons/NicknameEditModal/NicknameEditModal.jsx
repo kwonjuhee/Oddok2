@@ -1,40 +1,16 @@
-import React, { useState, useRef } from "react";
 import { Modal, Input } from "@components/@commons";
-import { editNickname } from "@api/user";
-import { useRecoilState } from "recoil";
-import { userState } from "@recoil/user";
+import { useEditNickname } from "@hooks/@queries/user";
 import { useInput } from "@hooks";
 import styles from "./NicknameEditModal.module.css";
 
 function NicknameEditModal({ onClose }) {
-  const [user, setUserState] = useRecoilState(userState);
-  const [nickname, setNickname] = useState(user.nickname);
-  const inputRef = useRef();
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [nickname, onChangeNickname] = useInput();
 
-  const onChange = (event) => {
-    event.preventDefault();
-    if (!event.currentTarget.value) {
-      setIsDisabled(true);
-    } else if (event.currentTarget.value && isDisabled) {
-      setIsDisabled(false);
-    }
-    setNickname(event.currentTarget.value);
+  const { mutate } = useEditNickname();
+
+  const changeNickname = () => {
+    mutate(nickname, { onSuccess: onClose });
   };
-
-  const changeNickname = async (name) => {
-    const response = await editNickname(name);
-    setUserState((prev) => ({ ...prev, nickname: response.nickname }));
-  };
-
-  const { pressEnter } = useInput(
-    inputRef,
-    () => {
-      changeNickname(nickname);
-      onClose();
-    },
-    isDisabled,
-  );
 
   return (
     <Modal
@@ -42,16 +18,13 @@ function NicknameEditModal({ onClose }) {
       onClose={onClose}
       onAction={{
         text: "확인",
-        action: () => {
-          changeNickname(nickname);
-          onClose();
-        },
+        action: changeNickname,
       }}
-      disabled={isDisabled}
+      disabled={nickname.length === 0}
     >
       <label htmlFor="nickname">
         <p className={styles.content}>닉네임</p>
-        <Input ref={inputRef} value={nickname} maxLength="8" onChange={onChange} onKeyPress={pressEnter} />
+        <Input value={nickname} maxLength="10" onChange={onChangeNickname} onEnterKeyPress={changeNickname} autoFocus />
       </label>
     </Modal>
   );
