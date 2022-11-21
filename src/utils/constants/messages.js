@@ -10,4 +10,5 @@ export const SUCCESS_MESSAGES = {
   MY_GOAL_EDIT: "목표가 수정되었습니다.",
   STUDYROOM_EDIT: "스터디룸 정보가 수정되었습니다.",
   STUDYROOM_DELETE: "스터디룸이 삭제되었습니다.",
+  NICKNAME_EDIT: "닉네임이 수정되었습니다.",
 };
