@@ -3,8 +3,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { userState } from "@recoil/user";
 import { getUserInfo, editNickname } from "@api/user";
-import { login, logout } from "@api/auth/auth";
+import { login, logout, deleteAccount } from "@api/auth/auth";
 import { useToast } from "@hooks/useToast";
+import { useLoading } from "@hooks/useLoading";
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from "@utils/constants/messages";
 
 export const useFetchUserInfo = () => {
@@ -71,6 +72,29 @@ export const useOAuthLogout = () => {
     onError: () => {
       navigate("/", { replace: true });
       displayToast({ message: ERROR_MESSAGES.LOGOUT, duration: 5000 });
+    },
+  });
+};
+
+export const useDeleteAccount = () => {
+  const [user, setUserState] = useRecoilState(userState);
+  const { displayToast } = useToast();
+  const { showLoading, hideLoading } = useLoading();
+
+  return useMutation({
+    mutationFn: deleteAccount,
+    onMutate: () => {
+      showLoading();
+    },
+    onSuccess: () => {
+      localStorage.removeItem("isLogin");
+      setUserState({ ...user, isLogin: false });
+    },
+    onError: () => {
+      displayToast({ message: ERROR_MESSAGES.DELETE_ACCOUNT });
+    },
+    onSettled: () => {
+      hideLoading();
     },
   });
 };
