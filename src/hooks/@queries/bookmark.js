@@ -33,9 +33,9 @@ export const useAddBookmark = () => {
 
   return useMutation({
     mutationFn: saveBookmark,
-    onMutate: async (newBookmark) => {
+    onMutate: async (newBookmarkId) => {
       const prevBookmark = queryClient.getQueryData(["bookmark"]);
-      queryClient.setQueryData(["bookmark"], newBookmark);
+      queryClient.setQueryData(["bookmark"], { ...prevBookmark, id: newBookmarkId });
 
       return { prevBookmark };
     },

@@ -5,7 +5,7 @@ import styles from "./Bookmark.module.css";
 function Bookmark() {
   const { isLoading, bookmarkData } = useBookmarkQuery();
 
-  if (isLoading || !bookmarkData) return null;
+  if (isLoading || !bookmarkData?.name) return null;
 
   const { currentUsers, endAt, hashtags, limitUsers, name, participant, rule } = bookmarkData;
 
@@ -47,9 +47,9 @@ function Bookmark() {
       <ul className={styles.ranking}>
         {participant.map(({ nickname, joinTime }, i) => (
           // eslint-disable-next-line react/no-array-index-key
-          <li key={i} className={styles.active}>
+          <li key={i + 1} className={styles.active}>
             <div className={styles.nickname}>
-              <span>{i}.&nbsp;</span>
+              <span>{i + 1}.&nbsp;</span>
               <span>{nickname}</span>
             </div>
             <span className={styles.time}>{`${joinTime} ~ 지금까지`}</span>
@@ -58,9 +58,9 @@ function Bookmark() {
         {5 - participant.length > 0 &&
           new Array(5 - participant.length).fill(0).map((_, i) => (
             // eslint-disable-next-line react/no-array-index-key
-            <li key={participant.length + i}>
+            <li key={participant.length + i + 1}>
               <div className={styles.nickname}>
-                <span>{participant.length + i}.&nbsp;</span>
+                <span>{participant.length + i + 1}.&nbsp;</span>
                 <span>현재 스터디원</span>
               </div>
               <span className={styles.time}>없음</span>
