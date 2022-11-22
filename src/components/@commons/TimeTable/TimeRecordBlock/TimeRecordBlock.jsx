@@ -23,9 +23,13 @@ function TimeRecordBlock({ startTime, endTime, color }) {
     } else {
       const array = [];
       array.push({ top, left, width: calculateWidth(60 - startMinute) });
-      array.push({ top: calculateTop(endHour), width: calculateWidth(endMinute) });
+      array.push({
+        top: calculateTop(endHour),
+        left: 0,
+        width: calculateWidth(endMinute),
+      });
       for (let i = startHour + 1; i < endHour; i += 1) {
-        array.push({ top: calculateTop(i), width: calculateWidth(60) });
+        array.push({ top: calculateTop(i), left: 0, width: calculateWidth(60) });
       }
       setBlocks(array);
     }
