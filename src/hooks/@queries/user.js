@@ -1,7 +1,7 @@
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { userState } from "@recoil/user";
-import { errorState } from "@recoil/error";
 import { getUserInfo, editNickname } from "@api/user";
 import { login, logout } from "@api/auth/auth";
 import { useToast } from "@hooks/useToast";
@@ -40,8 +40,9 @@ export const useEditNickname = () => {
 };
 
 export const useOAuthLogin = () => {
+  const navigate = useNavigate();
   const [user, setUserState] = useRecoilState(userState);
-  const setError = useSetRecoilState(errorState);
+  const { displayToast } = useToast();
 
   return useMutation({
     mutationFn: (authCode) => login(authCode),
@@ -49,15 +50,17 @@ export const useOAuthLogin = () => {
       localStorage.setItem("isLogin", true);
       setUserState({ ...user, isLogin: JSON.parse(localStorage.getItem("isLogin")) });
     },
-    onError: (error) => {
-      setError(error);
+    onError: () => {
+      navigate("/login", { replace: true });
+      displayToast({ message: ERROR_MESSAGES.LOGIN, duration: 5000 });
     },
   });
 };
 
 export const useOAuthLogout = () => {
+  const navigate = useNavigate();
   const [user, setUserState] = useRecoilState(userState);
-  const setError = useSetRecoilState(errorState);
+  const { displayToast } = useToast();
 
   return useMutation({
     mutationFn: logout,
@@ -65,8 +68,9 @@ export const useOAuthLogout = () => {
       localStorage.setItem("isLogin", false);
       setUserState({ ...user, isLogin: JSON.parse(localStorage.getItem("isLogin")) });
     },
-    onError: (error) => {
-      setError(error);
+    onError: () => {
+      navigate("/", { replace: true });
+      displayToast({ message: ERROR_MESSAGES.LOGOUT, duration: 5000 });
     },
   });
 };
