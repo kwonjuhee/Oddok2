@@ -6,7 +6,7 @@ import { TARGET_TIME_OPTIONS } from "@utils/constants/options";
 import styles from "./MyGoalEditModal.module.css";
 
 function MyGoalEditModal({ onClose }) {
-  const { myGoalData = {} } = useMyGoalQuery();
+  const { myGoalData } = useMyGoalQuery();
   const { mutate } = useMyGoalMutation();
 
   const [inputData, setInputData] = useState(myGoalData);

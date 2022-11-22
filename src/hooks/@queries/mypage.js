@@ -1,9 +1,10 @@
+import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProfile, createProfile, updateProfile, getTimeRecordList, getMyRoom, deleteStudyRoom } from "@api/mypage";
 import { updateStudyRoom } from "@api/study-room";
 import { useToast } from "@hooks/useToast";
-import { SUCCESS_MESSAGES, ERROR_MESSAGES } from "@utils/constants/messages";
 import { COLORS } from "@utils/constants/time_record_colors";
+import { SUCCESS_MESSAGES, ERROR_MESSAGES } from "@utils/constants/messages";
 
 export const useMyGoalQuery = () => {
   const { data: myGoalData } = useQuery({
@@ -12,7 +13,7 @@ export const useMyGoalQuery = () => {
   });
 
   return {
-    myGoalData,
+    myGoalData: myGoalData ?? {},
   };
 };
 
@@ -50,34 +51,28 @@ export const useTimeRecordQuery = (date) => {
   const { data: timeRecordData } = useQuery({
     queryKey: ["timeRecordList", date],
     queryFn: () => getTimeRecordList(date),
-    select: (data) => {
-      let totalStudyTime = 0;
+  });
 
-      const timeRecordList = data.map((e, i) => {
-        const startTime = new Date(e.startTime);
-        const endTime = new Date(e.endTime);
-        const diff = endTime - startTime;
-        totalStudyTime += diff;
-
+  const [timeRecordList, totalStudyTime] = useMemo(() => {
+    let total = 0;
+    return [
+      timeRecordData?.map((e, i) => {
+        const diff = new Date(e.endTime) - new Date(e.startTime);
+        total += diff;
         return {
-          startTime,
-          endTime,
+          startTime: new Date(e.startTime),
+          endTime: new Date(e.endTime),
+          subject: e.subject,
           color: COLORS[i % COLORS.length],
           studyTime: new Date(diff).toISOString().slice(11, 19),
         };
-      });
-
-      return {
-        timeRecordList,
-        totalStudyTime,
-      };
-    },
-  });
-
-  const { timeRecordList, totalStudyTime } = timeRecordData ?? {};
+      }),
+      total,
+    ];
+  }, [timeRecordData]);
 
   return {
-    timeRecordList: timeRecordList ?? [],
+    timeRecordList,
     totalStudyTime: totalStudyTime ?? 0,
   };
 };

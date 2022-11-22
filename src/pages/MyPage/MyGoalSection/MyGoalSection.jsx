@@ -7,7 +7,7 @@ import { getDday, dateParsing } from "@utils";
 import styles from "./MyGoalSection.module.css";
 
 function MyGoalSection() {
-  const { myGoalData = {} } = useMyGoalQuery();
+  const { myGoalData } = useMyGoalQuery();
   const { isModal, openModal, closeModal } = useModal();
 
   return (
