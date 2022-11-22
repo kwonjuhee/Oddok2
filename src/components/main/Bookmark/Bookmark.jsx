@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { differenceInCalendarDays, isToday, parseISO } from "date-fns";
 import { Thumbnail } from "@components/@commons";
 import { useBookmarkQuery } from "@hooks/@queries/bookmark";
 import { dateParsing } from "@utils";
@@ -11,7 +12,9 @@ function Bookmark() {
     return bookmarkData?.participant
       ?.map(({ nickname, joinTime }) => ({
         nickname,
-        joinTime: joinTime.split(/[T, .]/)[1],
+        joinTime: isToday(parseISO(joinTime))
+          ? joinTime.split(/[T, .]/)[1]
+          : `${differenceInCalendarDays(now, parseISO(joinTime))}일 전`,
         totalStudyTime: now - dateParsing(joinTime),
       }))
       .sort((a, b) => b.totalStudyTime - a.totalStudyTime);
