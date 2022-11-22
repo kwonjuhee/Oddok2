@@ -1,9 +1,21 @@
+import { useMemo } from "react";
 import { Thumbnail } from "@components/@commons";
 import { useBookmarkQuery } from "@hooks/@queries/bookmark";
+import { dateParsing } from "@utils";
 import styles from "./Bookmark.module.css";
 
 function Bookmark() {
   const { isLoading, bookmarkData } = useBookmarkQuery();
+  const rankedParticipant = useMemo(() => {
+    const now = Date.now();
+    return bookmarkData?.participant
+      ?.map(({ nickname, joinTime }) => ({
+        nickname,
+        joinTime: joinTime.split(/[T, .]/)[1],
+        totalStudyTime: now - dateParsing(joinTime),
+      }))
+      .sort((a, b) => b.totalStudyTime - a.totalStudyTime);
+  }, [bookmarkData]);
 
   if (isLoading || !bookmarkData?.name) return null;
 
@@ -45,7 +57,7 @@ function Bookmark() {
         </p>
       </div>
       <ul className={styles.ranking}>
-        {participant.map(({ nickname, joinTime }, i) => (
+        {rankedParticipant.map(({ nickname, joinTime }, i) => (
           // eslint-disable-next-line react/no-array-index-key
           <li key={i + 1} className={styles.active}>
             <div className={styles.nickname}>

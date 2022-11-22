@@ -12,16 +12,6 @@ export const useBookmarkQuery = () => {
     queryKey: ["bookmark"],
     queryFn: getBookmark,
     enabled: !!isLogin,
-    select: (data) =>
-      data
-        ? {
-            ...data,
-            participant: data.participant.map((e) => ({
-              ...e,
-              joinTime: e.joinTime.split(/[T, .]/)[1],
-            })),
-          }
-        : null,
   });
 
   return { isLoading, bookmarkData };
