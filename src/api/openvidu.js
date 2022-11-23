@@ -6,9 +6,9 @@ const OV = new OpenVidu();
 
 export const initSession = () => OV.initSession();
 
-export const connectToSession = (session, token, userData) => {
+export const connectToSession = async (session, token, userData) => {
   try {
-    session.connect(token, userData);
+    await session.connect(token, userData);
   } catch (error) {
     throw new OpenviduError(error, ERROR_MESSAGES.OPENVIDU_SESSION_CONNECT);
   }

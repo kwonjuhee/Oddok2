@@ -91,15 +91,18 @@ function StudyRoom() {
       connectDevice(deviceStatus),
     ]);
     const stream = await initPublisher(deviceId, deviceStatus);
-    session.publish(stream);
+    await session.publish(stream);
     setLocalUser((prev) => ({ ...prev, stream, audioActive }));
   };
 
   useEffect(() => {
-    if (!location.state.token) {
-      navigate(-1);
+    if (!location.state?.token) {
+      navigate(`/studyroom/${roomId}/setting`, { replace: true });
+      return;
     }
-    startOpenvidu().catch((error) => setError(error));
+    startOpenvidu().catch((error) => {
+      setError(error);
+    });
   }, []);
 
   useEffect(() => {
@@ -155,11 +158,12 @@ function StudyRoom() {
       {isLeaveModal && (
         <Modal
           title="스터디 종료"
-          content="정말 스터디방을 나가시겠습니까?"
           onClose={closeModal}
           onSubAction={{ text: "보지 않고 나가기", action: leaveRoom }}
           onAction={{ text: "시간표 확인", action: goToSharePage }}
-        />
+        >
+          정말 스터디방을 나가시겠습니까?
+        </Modal>
       )}
     </div>
   );
