@@ -13,9 +13,9 @@ export const handlers = [
 
   rest.post("/study-room", async (req, res, ctx) => {
     const studyroomInfo = await req.json();
-    studyroom.unshift({ ...studyroomInfo, id: studyroom.length + 1, userId: user.id });
+    studyroom.unshift({ ...studyroomInfo, id: studyroom.length + 1, userId: user.id, currentUsers: 0 });
 
-    return res(ctx.delay(), ctx.status(200));
+    return res(ctx.delay(), ctx.status(200), ctx.json({ id: studyroom.length + 1, token: "token" }));
   }),
 
   rest.get("/study-room/join/:studyroomId", (req, res, ctx) =>
@@ -38,7 +38,7 @@ export const handlers = [
     const index = studyroom.findIndex(({ id }) => id === studyroomId);
     studyroom[index] = newStudyroomInfo;
 
-    return res(ctx.delay(), ctx.status(200), newStudyroomInfo);
+    return res(ctx.delay(), ctx.status(200), ctx.json(newStudyroomInfo));
   }),
 
   rest.get("/study-room", (req, res, ctx) => {
