@@ -1,5 +1,5 @@
-import React, { useState, useLayoutEffect, useEffect } from "react";
-import { useRecoilState } from "recoil";
+import React, { useState, useLayoutEffect } from "react";
+import { useSetRecoilState } from "recoil";
 import { roomInfoState } from "@recoil/studyroom";
 import { ToggleButton, Dropdown, Input, Textarea, Calendar } from "@components/@commons";
 import { VideoOn, VideoOff, MicOn, MicOff } from "@icons";
@@ -12,8 +12,7 @@ import ImageForm from "./ImageForm/ImageForm";
 import styles from "./SettingForm.module.css";
 
 function SettingForm({ roomData, onClose, onUpdate }) {
-  const [roomInfoAtom, setRoomInfoAtom] = useRecoilState(roomInfoState);
-  const initialData = roomData || roomInfoAtom;
+  const initialData = roomData;
   const [category, setCategory] = useState(initialData.category);
   const [roomName, setRoomName] = useState(initialData.name);
   const [limitUsers, setLimitUsers] = useState(initialData.limitUsers);
@@ -28,6 +27,8 @@ function SettingForm({ roomData, onClose, onUpdate }) {
   const { isCamOn, isMicOn } = deviceRule;
   const [bgmlink, setBgmlink] = useState(initialData.bgmlink);
   const [rule, setRule] = useState(initialData.rule);
+
+  const setRoomInfoAtom = useSetRecoilState(roomInfoState);
 
   const validateInput = (input) => /[\u{1F004}-\u{1F9E6}]|[\u{1F600}-\u{1F9D0}]/gu.test(input);
   const isInvalidRoomName = validateInput(roomName);

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { HashtagButton } from "@components/@commons";
 import { Plus } from "@icons";
 import { HASHTAG_OPTIONS } from "@utils/constants/options";
-import InputButton from "../InputButton/InputButton";
+import InputButton from "./InputButton/InputButton";
 import styles from "./HashtagForm.module.css";
 
 function HashtagForm({ hashtags, setHashtags }) {

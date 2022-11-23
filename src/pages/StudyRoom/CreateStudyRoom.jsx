@@ -26,7 +26,7 @@ function CreateStudyRoom() {
   return (
     <>
       <div className={styles.container}>
-        {sideBarType === "SETTING" && <SettingForm onClose={toggleSideBar} />}
+        {sideBarType === "SETTING" && <SettingForm roomData={roomInfo} onClose={toggleSideBar} />}
         <UserVideo
           count={1}
           user={{

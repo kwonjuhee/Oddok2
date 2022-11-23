@@ -30,7 +30,7 @@ function SettingSideBar({ session, showEditBtn }) {
 
   return (
     <>
-      {isFormOpen && <SettingForm onClose={toggleSettingForm} onUpdate={updateRoomInfo} />}
+      {isFormOpen && <SettingForm roomData={studyroomData} onClose={toggleSettingForm} onUpdate={updateRoomInfo} />}
       <aside className={styles.side_box}>
         <h1>{studyroomData.name}</h1>
         <div>
