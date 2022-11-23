@@ -1,0 +1,15 @@
+.container {
+  color: var(--gray500);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 0;
+}
+
+.container > button {
+  padding: 8px 12px;
+  border: 1px var(--gray100) solid;
+  border-radius: 8px;
+  color: var(--gray100);
+}

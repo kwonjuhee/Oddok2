@@ -1,17 +1,11 @@
-import React from "react";
 import styles from "./ErrorPage.module.css";
 
-function ErrorPage() {
+function ErrorPage({ resetErrorBoundary }) {
   return (
     <div className={styles.container}>
-      <div className={styles.title}>알 수 없는 에러 발생😵</div>
-      <button
-        type="button"
-        onClick={() => {
-          window.location.reload();
-        }}
-      >
-        새로고침
+      <div className={styles.title}>알 수 없는 에러가 발생했습니다.😵</div>
+      <button type="button" onClick={() => resetErrorBoundary()}>
+        다시 시도하기
       </button>
     </div>
   );
