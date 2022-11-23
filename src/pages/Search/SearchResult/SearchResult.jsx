@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { StudyRoomCardList } from "@components/main";
-import { HashtagList } from "..";
+import { StudyRoomCardList, StudyRoomCardListHead } from "@components/main";
+import ErrorBoundary from "@components/@commons/ErrorBoundary";
+import { PopularHashtagList } from "@components/search";
 import styles from "./SearchResult.module.css";
 
 function SearchResult() {
@@ -23,9 +24,14 @@ function SearchResult() {
       <h2>&ldquo;{searchParams.get("name") ?? `#${searchParams.get("hashtag")}`}&rdquo; 검색 결과</h2>
       <div>
         <h3>태그 필터</h3>
-        <HashtagList onToggle={selectTagFilters} />
+        <ErrorBoundary>
+          <PopularHashtagList onToggle={selectTagFilters} />
+        </ErrorBoundary>
       </div>
-      <StudyRoomCardList tagFilter={[...selectedHashtag]} />
+      <ErrorBoundary>
+        <StudyRoomCardListHead />
+        <StudyRoomCardList tagFilter={[...selectedHashtag]} />
+      </ErrorBoundary>
     </div>
   );
 }

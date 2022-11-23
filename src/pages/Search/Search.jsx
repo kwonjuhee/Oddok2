@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { PageLayout } from "@layouts";
-import { SearchBrowse, SearchResult } from "@components/search";
 import { Input } from "@components/@commons";
 import { useSearchHistory } from "@hooks";
+import SearchBrowse from "./SearchBrowse/SearchBrowse";
+import SearchResult from "./SearchResult/SearchResult";
 import styles from "./Search.module.css";
 
 function Search() {

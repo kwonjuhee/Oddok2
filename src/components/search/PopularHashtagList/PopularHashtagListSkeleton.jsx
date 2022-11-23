@@ -1,8 +1,8 @@
-import styles from "./HashtagListSkeleton.module.css";
+import styles from "./PopularHashtagListSkeleton.module.css";
 
 const widths = [105, 97, 77, 77, 97, 89, 74, 92, 109, 102, 96, 76, 86, 87, 80];
 
-function HashtagListSkeleton() {
+function PopularHashtagListSkeleton() {
   return (
     <>
       {new Array(15).fill(0).map((_, i) => (
@@ -13,4 +13,4 @@ function HashtagListSkeleton() {
   );
 }
 
-export default HashtagListSkeleton;
+export default PopularHashtagListSkeleton;

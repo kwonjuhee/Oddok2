@@ -47,6 +47,7 @@ export const useStudyRoomList = (searchParams, tagFilter) => {
     getNextPageParam: (lastPage, allPages) =>
       lastPage.flatMap((e) => e).length < 16 ? undefined : Math.ceil(allPages.flatMap((e) => e).length / 16),
     select: (data) => data.pages.flatMap((e) => e),
+    useErrorBoundary: true,
   });
 
   return {

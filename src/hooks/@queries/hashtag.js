@@ -10,6 +10,8 @@ export const useGetPopularHashtag = () => {
   const { data: popularHashtagList, isLoading } = useQuery({
     queryKey: ["popularHashtagList", studyroomName],
     queryFn: () => getPopluarHashtag(studyroomName),
+    select: (data) => data.hashtags,
+    useErrorBoundary: true,
   });
 
   return { popularHashtagList, isLoading };
