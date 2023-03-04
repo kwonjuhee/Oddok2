@@ -27,20 +27,22 @@ function StudyRoomCardList({ tagFilter = [] }) {
   }
 
   return (
-    <ul className={styles.container}>
-      {studyroomListData.map((studyroomData) => (
-        <li key={studyroomData.id}>
-          {studyroomData.isPublic ? (
-            <Link to={`/studyroom/${studyroomData.id}/setting`}>
-              <StudyRoomCard roomData={studyroomData} />
-            </Link>
-          ) : (
-            <Link to={`/check-password/${studyroomData.id}`} state={{ background: location }}>
-              <StudyRoomCard roomData={studyroomData} />
-            </Link>
-          )}
-        </li>
-      ))}
+    <>
+      <ul className={styles.container}>
+        {studyroomListData.map((studyroomData) => (
+          <li key={studyroomData.id}>
+            {studyroomData.isPublic ? (
+              <Link to={`/studyroom/${studyroomData.id}/setting`}>
+                <StudyRoomCard roomData={studyroomData} />
+              </Link>
+            ) : (
+              <Link to={`/check-password/${studyroomData.id}`} state={{ background: location }}>
+                <StudyRoomCard roomData={studyroomData} />
+              </Link>
+            )}
+          </li>
+        ))}
+      </ul>
       {hasNextPage && (
         <div className={styles.footer}>
           <button type="button" onClick={clickMoreBtn}>
@@ -51,7 +53,7 @@ function StudyRoomCardList({ tagFilter = [] }) {
           </button>
         </div>
       )}
-    </ul>
+    </>
   );
 }
 

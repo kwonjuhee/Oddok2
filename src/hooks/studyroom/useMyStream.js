@@ -1,10 +1,10 @@
 import { useRef, useEffect } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { deviceState } from "@recoil/studyroom";
 
 const useMyStream = () => {
   const videoRef = useRef();
-  const setDeviceStatus = useSetRecoilState(deviceState);
+  const [devideStatus, setDeviceStatus] = useRecoilState(deviceState);
 
   useEffect(() => {
     const getVideoandAudio = async () => {
@@ -36,10 +36,13 @@ const useMyStream = () => {
     setDeviceStatus((prev) => ({ ...prev, audio: audioTrack.enabled }));
   };
 
-  const videoActive = videoRef.current?.srcObject?.getVideoTracks()[0].enabled ?? true;
-  const audioActive = videoRef.current?.srcObject?.getAudioTracks()[0].enabled ?? false;
-
-  return { videoRef, videoActive, audioActive, toggleVideo, toggleAudio };
+  return {
+    videoRef,
+    videoActive: devideStatus.video,
+    audioActive: devideStatus.audio,
+    toggleVideo,
+    toggleAudio,
+  };
 };
 
 export default useMyStream;

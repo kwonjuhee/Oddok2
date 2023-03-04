@@ -24,18 +24,11 @@ export const handlers = [
 
   rest.get("/study-room/leave/:studyroomId", (req, res, ctx) => res(ctx.delay(), ctx.status(200))),
 
-  rest.get("/study-room/:studyroomId", (req, res, ctx) => {
-    const { studyroomId } = req.params;
-    const studyroomData = studyroom.find(({ id }) => id === studyroomId);
-
-    return res(ctx.delay(), ctx.status(200), ctx.json(studyroomData));
-  }),
-
   rest.put("/study-room/:studyroomId", async (req, res, ctx) => {
     const { studyroomId } = req.params;
     const newStudyroomInfo = await req.json();
 
-    const index = studyroom.findIndex(({ id }) => id === studyroomId);
+    const index = studyroom.findIndex(({ id }) => id === Number(studyroomId));
     studyroom[index] = newStudyroomInfo;
 
     return res(ctx.delay(), ctx.status(200), ctx.json(newStudyroomInfo));
