@@ -2,7 +2,7 @@ name: fe CD
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
 
 env:
   S3_BUCKET_NAME: oddok-frontend-bucket
@@ -39,7 +39,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm install
 
       - name: Build
         run: npm run build
